@@ -167,6 +167,14 @@ mode "resize" {
         bindsym Escape mode "default"
 }
 
+#volume control 
+	bindsym $mod+F11 exec amixer set Master 5%-
+	bindsym $mod+F12 exec amixer set Master 5%+
+
+#Brightness control
+	bindsym $mod+F4 exec xbacklight -dec 10
+	bindsym $mod+F5 exec xbacklight -inc 10
+#Resize
 bindsym $mod+r mode "resize"
 
 # Start i3bar to display a workspace bar (plus the system information i3status
@@ -175,12 +183,23 @@ bar {
         status_command i3status
 position bottom
 # mode hide
+colors {
+        background #2d2d2d
+        statusline #dedede
+        separator #2d2d2d
+
+        focused_workspace  #d64937 #d64937 #dedede
+        active_workspace   #2d2d2d #5f676a #dedede
+        inactive_workspace #2d2d2d #2d2d2d #888888
+        urgent_workspace   #333333 #900000 #ffffff
+    }
 }
 
 #Start-up apps
 exec nitrogen --restore
 exec /usr/bin/nm-applet
-exec volumeicon
+#exec volumeicon
+exec /usr/bin/pa-applet
 exec dropboxd
 exec urxvtd -q -o -f &
-exec compton -b
+#exec compton -b
