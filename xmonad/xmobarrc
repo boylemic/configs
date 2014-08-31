@@ -1,0 +1,22 @@
+Config { font = "xft:termsyn:size=10"
+, bgColor = "#000000"
+, fgColor = "#2E9AFE"
+, position = BottomW L 130
+, commands = [ Run Network "wireless" ["-L","0","-H","32","--normal","green","--high","red"] 10
+, Run Memory ["-t","Mem: <usedratio>%"] 10
+, Run Swap [] 10
+, Run Cpu ["-L","15","-H","50","--normal","grey","--high","darkgrey"] 10
+, Run BatteryP ["BAT1"]
+["-t", "Bat:<left>%",
+"-L", "10", "-H", "80", "-p", "3",
+"--", "-O", "<fc=darkgrey>On</fc> - ", "-i", "",
+"-L", "-15", "-H", "-5",
+"-l", "darkgrey", "-m", "white", "-h", "grey"]
+600
+, Run Com "/bin/bash" ["-c", "~/.xmonad/getvolume" ] "myvolume" 10
+, Run Date "%a %b %_d %Y %H:%M:%S" "date" 10
+, Run StdinReader
+]
+, sepChar = "%"
+, alignSep = "}{"
+, template = "%StdinReader% }{ %wlp2s0% | %cpu% | %memory% | %swap% | %battery% | Vol: %myvolume% | %date%"}
