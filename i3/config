@@ -4,13 +4,10 @@
 # Should you change your keyboard layout somewhen, delete
 # this file and re-run i3-config-wizard(1).
 #
-
 # i3 config file (v4)
 #
 # Please see http://i3wm.org/docs/userguide.html for a complete reference!
-
 set $mod Mod1
-
 # Font for window titles. Will also be used by the bar unless a different font
 # is used in the bar {} block below. ISO 10646 = Unicode
 font -misc-fixed-medium-r-normal--13-120-75-75-C-70-iso10646-1
@@ -19,7 +16,6 @@ font -misc-fixed-medium-r-normal--13-120-75-75-C-70-iso10646-1
 # right-to-left text rendering, you should instead use pango for rendering and
 # chose a FreeType font, such as:
 # font pango:DejaVu Sans Mono 10
-
 # Use Mouse+$mod to drag floating windows to their wanted position
 floating_modifier $mod
 
@@ -27,7 +23,6 @@ floating_modifier $mod
 #bindsym $mod+Return exec i3-sensible-terminal
 #bindsym $mod+Return exec --no-startup-id xfce4-terminal
 bindsym $mod+Return exec --no-startup-id urxvtc
-
 # kill focused window
 bindsym $mod+Shift+q kill
 
@@ -84,14 +79,13 @@ bindsym $mod+space focus mode_toggle
 
 # focus the parent container
 bindsym $mod+a focus parent
-
 # focus the child container
 #bindsym $mod+d focus child
 
 # switch to workspace
-bindsym $mod+1 workspace 1
-bindsym $mod+2 workspace 2
-bindsym $mod+3 workspace 3
+bindsym $mod+1 workspace 1: Web
+bindsym $mod+2 workspace 2: Term
+bindsym $mod+3 workspace 3: Network-Mail
 bindsym $mod+4 workspace 4
 bindsym $mod+5 workspace 5
 bindsym $mod+6 workspace 6
@@ -101,9 +95,9 @@ bindsym $mod+9 workspace 9
 bindsym $mod+0 workspace 10
 
 # move focused container to workspace
-bindsym $mod+Shift+1 move container to workspace 1
-bindsym $mod+Shift+2 move container to workspace 2
-bindsym $mod+Shift+3 move container to workspace 3
+bindsym $mod+Shift+1 move container to workspace 1: Web
+bindsym $mod+Shift+2 move container to workspace 2: Term
+bindsym $mod+Shift+3 move container to workspace 3: Network-Mail
 bindsym $mod+Shift+4 move container to workspace 4
 bindsym $mod+Shift+5 move container to workspace 5
 bindsym $mod+Shift+6 move container to workspace 6
@@ -118,83 +112,79 @@ new_window 1pixel
 bindsym $mod+t border normal
 bindsym $mod+y border 1pixel
 bindsym $mod+u border none
-
 set $mode_system System (l) lock, (e) logout, (s) suspend, (h) hibernate, (r) reboot, (Shift+s) shutdown
 mode "$mode_system" {
-    bindsym l exec --no-startup-id i3exit lock, mode "default"
-    bindsym e exec --no-startup-id i3exit logout, mode "default"
-    bindsym s exec --no-startup-id i3exit suspend, mode "default"
-    bindsym h exec --no-startup-id i3exit hibernate, mode "default"
-    bindsym r exec --no-startup-id i3exit reboot, mode "default"
-    bindsym Shift+s exec --no-startup-id i3exit shutdown, mode "default"  
+bindsym l exec --no-startup-id i3exit lock, mode "default"
+bindsym e exec --no-startup-id i3exit logout, mode "default"
+bindsym s exec --no-startup-id i3exit suspend, mode "default"
+bindsym h exec --no-startup-id i3exit hibernate, mode "default"
+bindsym r exec --no-startup-id i3exit reboot, mode "default"
+bindsym Shift+s exec --no-startup-id i3exit shutdown, mode "default"
 
-    # back to normal: Enter or Escape
-    bindsym Return mode "default"
-    bindsym Escape mode "default"
+# back to normal: Enter or Escape
+bindsym Return mode "default"
+bindsym Escape mode "default"
 }
 bindsym $mod+F2 mode "$mode_system"
 
-
-
 # reload the configuration file
 bindsym $mod+Shift+c reload
+
 # restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
 bindsym $mod+Shift+r restart
+
 # exit i3 (logs you out of your X session)
 bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -b 'Yes, exit i3' 'i3-msg exit'"
 
 # resize window (you can also use the mouse for that)
 mode "resize" {
-        # These bindings trigger as soon as you enter the resize mode
-
-        # Pressing left will shrink the window?s width.
-        # Pressing right will grow the window?s width.
-        # Pressing up will shrink the window?s height.
-        # Pressing down will grow the window?s height.
-        bindsym j resize shrink width 10 px or 10 ppt
-        bindsym k resize grow height 10 px or 10 ppt
-        bindsym l resize shrink height 10 px or 10 ppt
-        bindsym semicolon resize grow width 10 px or 10 ppt
-
-        # same bindings, but for the arrow keys
-        bindsym Left resize shrink width 10 px or 10 ppt
-        bindsym Down resize grow height 10 px or 10 ppt
-        bindsym Up resize shrink height 10 px or 10 ppt
-        bindsym Right resize grow width 10 px or 10 ppt
-
-        # back to normal: Enter or Escape
-        bindsym Return mode "default"
-        bindsym Escape mode "default"
+# These bindings trigger as soon as you enter the resize mode
+# Pressing left will shrink the window?s width.
+# Pressing right will grow the window?s width.
+# Pressing up will shrink the window?s height.
+# Pressing down will grow the window?s height.
+bindsym j resize shrink width 10 px or 10 ppt
+bindsym k resize grow height 10 px or 10 ppt
+bindsym l resize shrink height 10 px or 10 ppt
+bindsym semicolon resize grow width 10 px or 10 ppt
+# same bindings, but for the arrow keys
+bindsym Left resize shrink width 10 px or 10 ppt
+bindsym Down resize grow height 10 px or 10 ppt
+bindsym Up resize shrink height 10 px or 10 ppt
+bindsym Right resize grow width 10 px or 10 ppt
+# back to normal: Enter or Escape
+bindsym Return mode "default"
+bindsym Escape mode "default"
 }
 
-#volume control 
-	bindsym $mod+F11 exec amixer set Master 5%-
-	bindsym $mod+F12 exec amixer set Master 5%+
+#volume control
+bindsym $mod+F11 exec amixer set Master 5%-
+bindsym $mod+F12 exec amixer set Master 5%+
 
 #Brightness control
-	bindsym $mod+F4 exec xbacklight -dec 10
-	bindsym $mod+F5 exec xbacklight -inc 10
+bindsym $mod+F4 exec xbacklight -dec 10
+bindsym $mod+F5 exec xbacklight -inc 10
+
 #Resize
 bindsym $mod+r mode "resize"
-
 # Start i3bar to display a workspace bar (plus the system information i3status
 # finds out, if available)
 bar {
-        status_command i3status
+status_command i3status
 position bottom
-# mode hide
+
+#mode hide
 colors {
-        background #2d2d2d
-        statusline #dedede
-        separator #2d2d2d
-
-        focused_workspace  #d64937 #d64937 #dedede
-        active_workspace   #2d2d2d #5f676a #dedede
-        inactive_workspace #2d2d2d #2d2d2d #888888
-        urgent_workspace   #333333 #900000 #ffffff
-    }
+background #00000
+statusline #2E9AFE
+separator  #00000
+		  #Bord #Back  #Text
+focused_workspace #00000 #00000 #2E9AFE
+active_workspace #2d2d2d #5f676a #dedede
+inactive_workspace #00000 #00000 #0B0B61
+urgent_workspace #000000 #000000 #900000
 }
-
+}
 #Start-up apps
 exec nitrogen --restore
 exec /usr/bin/nm-applet
@@ -202,4 +192,3 @@ exec /usr/bin/nm-applet
 exec /usr/bin/pa-applet
 exec dropboxd
 exec urxvtd -q -o -f &
-#exec compton -b
