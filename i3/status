@@ -42,7 +42,7 @@ run_watch VPN {
 pidfile = "/var/run/vpnc/pid"
 }
 tztime local {
-format = ":%Y-%m-%d %H:%M"
+format = ":%m-%d-%Y %H:%M"
 }
 load {
 format = "%1min"
@@ -53,10 +53,9 @@ format = "%free"
 cpu_usage {
 format= ":%usage"
 }
-
 volume master {
-        format = "♪: %volume"
-        device = "default"
-        mixer = "Master"
-        mixer_idx = 0
+format = ": %volume"
+device = "default"
+mixer = "Master"
+mixer_idx = 0
 }
