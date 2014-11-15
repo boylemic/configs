@@ -73,7 +73,7 @@ bindsym $mod+1 workspace 1:
 bindsym $mod+2 workspace 2:
 bindsym $mod+3 workspace 3:
 bindsym $mod+4 workspace 4:
-bindsym $mod+5 workspace 5
+bindsym $mod+5 workspace 5:
 bindsym $mod+6 workspace 6
 bindsym $mod+7 workspace 7
 bindsym $mod+8 workspace 8
@@ -84,7 +84,7 @@ bindsym $mod+Shift+1 move container to workspace 1:
 bindsym $mod+Shift+2 move container to workspace 2:
 bindsym $mod+Shift+3 move container to workspace 3:
 bindsym $mod+Shift+4 move container to workspace 4:
-bindsym $mod+Shift+5 move container to workspace 5
+bindsym $mod+Shift+5 move container to workspace 5:
 bindsym $mod+Shift+6 move container to workspace 6
 bindsym $mod+Shift+7 move container to workspace 7
 bindsym $mod+Shift+8 move container to workspace 8
@@ -146,17 +146,21 @@ bindsym $mod+r mode "resize"
 # Start i3bar to display a workspace bar (plus the system information i3status
 # finds out, if available)
 bar {
-status_command i3status
+#status_command i3status
+#status_command ~/.i3/i3-conky-initscript.sh
+status_command ~/.i3/bin/conky-wrapper
+
 position bottom
-#mode hide
+tray_output none
+mode hide
 font xft:Cousine, FontAwesome 9
 colors {
 background #00000
 statusline #2E9AFE
 separator #00000
-#Bord #Back #Text
-focused_workspace #00000 #00000 #2E9AFE
-active_workspace #2d2d2d #5f676a #dedede
+                   #Bord  #Back  #Text
+focused_workspace #00000 #00000  #2E9AFE
+active_workspace  #2d2d2d #5f676a #dedede
 inactive_workspace #00000 #00000 #0B0B61
 urgent_workspace #000000 #000000 #900000
 }
