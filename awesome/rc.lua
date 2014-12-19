@@ -31,18 +31,16 @@ text = err })
 in_error = false
 end)
 end
-
 --Vicious + Widgets
 vicious = require("vicious")
-
 -- Battery Widget
 bat_widget = wibox.widget.textbox()
 vicious.register(bat_widget, vicious.widgets.bat, "  $1$2 ", 32, "BAT1")
---
+-- 
 -- }}}
 -- {{{ Variable definitions
 -- Themes define colours, icons, font and wallpapers.
-beautiful.init("/usr/share/awesome/themes/default/theme.lua")
+beautiful.init("/usr/share/awesome/themes/zenburn/theme.lua")
 -- This is used later as the default terminal and editor to run.
 terminal = "urxvt"
 editor = os.getenv("EDITOR") or "vim"
@@ -83,7 +81,7 @@ end
 tags = {}
 for s = 1, screen.count() do
 -- Each screen has its own tag table.
-tags[s] = awful.tag({ '1:', '2:', '3:', '4:', 5, 6, 7, 8, 9 }, s, layouts[1])
+tags[s] = awful.tag({ '1:', '2:', '3:', '4:', '5:', 6, 7, 8, 9,10 }, s, layouts[1])
 end
 -- }}}
 -- {{{ Menu
@@ -217,6 +215,14 @@ awful.client.focus.byidx(-1)
 if client.focus then client.focus:raise() end
 end),
 awful.key({ modkey, }, "w", function () mymainmenu:show() end),
+---Keybinds for volume control
+awful.key({ modkey, }, "F11" , function() awful.util.spawn( "amixer -q set Master 5%-" ) end),
+awful.key({ modkey, }, "F12" , function() awful.util.spawn( "amixer -q set Master 5%+" ) end),
+
+--Keybinds for Brighness
+awful.key({ modkey, }, "F4" , function() awful.util.spawn_with_shell( "xbacklight -dec 10" ) end),
+awful.key({ modkey, }, "F5" , function() awful.util.spawn_with_shell( "xbacklight -inc 10" ) end),
+
 -- Layout manipulation
 awful.key({ modkey, "Shift" }, "j", function () awful.client.swap.byidx( 1) end),
 awful.key({ modkey, "Shift" }, "k", function () awful.client.swap.byidx( -1) end),
@@ -265,6 +271,8 @@ awful.key({ modkey, }, "o", awful.client.movetoscreen ),
 awful.key({ modkey, }, "t", function (c) c.ontop = not c.ontop end),
 awful.key({ modkey, }, "n",
 function (c)
+
+
 -- The client currently has the input focus, so it cannot be
 -- minimized, since minimized clients can't have the focus.
 c.minimized = true
@@ -275,6 +283,8 @@ c.maximized_horizontal = not c.maximized_horizontal
 c.maximized_vertical = not c.maximized_vertical
 end)
 )
+
+
 -- Bind all key numbers to tags.
 -- Be careful: we use keycodes to make it works on any keyboard layout.
 -- This should map on the top row of your keyboard, usually 1 to 9.
@@ -325,6 +335,7 @@ awful.button({ modkey }, 1, awful.mouse.client.move),
 awful.button({ modkey }, 3, awful.mouse.client.resize))
 -- Set keys
 root.keys(globalkeys)
+
 -- }}}
 -- {{{ Rules
 -- Rules to apply to new clients (through the "manage" signal).
@@ -411,7 +422,8 @@ end)
 client.connect_signal("focus", function(c) c.border_color = beautiful.border_focus end)
 client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_normal end)
 -- }}}
-awful.util.spawn_with_shell("run_once nm-applet &")
-awful.util.spawn_with_shell("run_once volumeicon") 
-awful.util.spawn_with_shell("run_once owncloud &")
-awful.util.spawn_with_shell("run_once dropboxd &")
+os.execute("nm-applet &")
+os.execute("volumeicon &")
+os.execute("owncloud &")
+os.execute("dropboxd &")
+
