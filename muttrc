@@ -15,6 +15,7 @@ set certificate_file =~/.mutt/certificates
 set editor="vim"
 set timeout = 120
 set mail_check = 60
+set sort = reverse-date-received
 unset imap_passive
 bind index G imap-fetch-mail
 macro pager \cb <pipe-entry>'w3m'<enter> 'Follow links in w3m'
