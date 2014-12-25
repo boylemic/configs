@@ -3,6 +3,7 @@ local gears = require("gears")
 local awful = require("awful")
 awful.rules = require("awful.rules")
 require("awful.autofocus")
+require("battery")
 -- Widget and layout library
 local wibox = require("wibox")
 -- Theme handling library
@@ -34,9 +35,9 @@ end
 --Vicious + Widgets
 vicious = require("vicious")
 -- Battery Widget
-bat_widget = wibox.widget.textbox()
+bat_widget = wibox.widget.textbox("<span color='#2E9AFE'></span>")
 vicious.register(bat_widget, vicious.widgets.bat, "  $1$2 ", 32, "BAT1")
--- 
+
 -- }}}
 -- {{{ Variable definitions
 -- Themes define colours, icons, font and wallpapers.
@@ -92,10 +93,38 @@ myawesomemenu = {
 { "restart", awesome.restart },
 { "quit", awesome.quit }
 }
-mymainmenu = awful.menu({ items = { { "awesome", myawesomemenu, beautiful.awesome_icon },
-{ "open terminal", terminal }
+webstuff = {
+	{ "Browser", "firefox" },
+	{ "Email", terminal .. " -e mutt" },
+
 }
-})
+mediastuff = {
+	{ "Media Player", terminal .. " -e mocp" },
+	{ "Video Player", "vlc" },
+	{ "Screenshot", "xfce4-screenshooter" },
+}
+devstuff = {
+	{ "Office", "libreoffice" },
+	{ "KdenLive", "kdenlive" },
+	{ "Coms" , "mumble" },
+}
+gamestuff = {
+	{ "Steam", "steam" },
+}
+utilstuff = {
+	{ "Ranger",terminal .. " -e ranger"},
+	{ "Vim", "urxvt -e vim" },
+	{ "Term", terminal },
+}
+
+mymainmenu = awful.menu({ items = { { "awesome", myawesomemenu, beautiful.awesome_icon },
+				    { "Web", webstuff },
+				    { "Media", mediastuff },
+			            { "Dev", devstuff },
+				    { "Game", gamestuff },
+				    { "Utils", utilstuff },
+				  }
+			})
 mylauncher = awful.widget.launcher({ image = beautiful.awesome_icon,
 menu = mymainmenu })
 -- Menubar configuration
@@ -341,10 +370,11 @@ root.keys(globalkeys)
 -- Rules to apply to new clients (through the "manage" signal).
 awful.rules.rules = {
 -- All clients will match this rule.
-{ rule = { },
+{ rule = {},
 properties = { border_width = beautiful.border_width,
 border_color = beautiful.border_normal,
 focus = awful.client.focus.filter,
+size_hints_honor = false,
 raise = true,
 keys = clientkeys,
 buttons = clientbuttons } },
@@ -354,6 +384,7 @@ properties = { floating = true } },
 properties = { floating = true } },
 { rule = { class = "gimp" },
 properties = { floating = true } },
+
 -- Set Firefox to always map on tags number 2 of screen 1.
 -- { rule = { class = "Firefox" },
 -- properties = { tag = tags[1][2] } },
@@ -405,6 +436,7 @@ right_layout:add(awful.titlebar.widget.maximizedbutton(c))
 right_layout:add(awful.titlebar.widget.stickybutton(c))
 right_layout:add(awful.titlebar.widget.ontopbutton(c))
 right_layout:add(awful.titlebar.widget.closebutton(c))
+
 -- The title goes in the middle
 local middle_layout = wibox.layout.flex.horizontal()
 local title = awful.titlebar.widget.titlewidget(c)
@@ -422,8 +454,8 @@ end)
 client.connect_signal("focus", function(c) c.border_color = beautiful.border_focus end)
 client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_normal end)
 -- }}}
-os.execute("nm-applet &")
-os.execute("volumeicon &")
-os.execute("owncloud &")
-os.execute("dropboxd &")
+awful.util.spawn_with_shell("run_once nm-applet")
+awful.util.spawn_with_shell("run_once volumeicon")
+awful.util.spawn_with_shell("run_once owncloud") 
+awful.util.spawn_with_shell("run_once dropboxd")
 
