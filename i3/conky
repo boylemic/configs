@@ -1,0 +1,23 @@
+background no
+out_to_console yes
+out_to_x no
+max_text_width 0
+own_window no
+update_interval 0.5
+total_run_times 0
+short_units yes
+if_up_strictness address
+use_spacer right
+override_utf8_locale no
+cpu_avg_samples 2
+TEXT
+,[
+{ "full_text": ": ${moc_song} ", "color":"\#FF4000"},
+{"full_text": ": [${upspeed wlp2s0}] ", "color":"\#00FF00", "separator": false, "separator_block_width":6},\
+#Finds current volume. May need modified depending on your setup
+{"full_text": ": ${exec amixer -c 0 get Master | grep Mono: | cut -d " " -f6} ", "color":"\#268BD2"},
+{ "full_text": ": ${exec xbacklight| awk '{printf("%d\n",$1 + 0.5)}'} ", "color":"\#F7FE2E"},
+{"full_text": " :[$cpu%] ", "color":"\#8D00FF", "separator": false, "separator_block_width":6},\
+ {"full_text": ":[${battery_percent BAT1}] ","color":"\#dedede"},
+{"full_text": " :${time %a %d %b} ${time %H:%M:%S} ","color": "\#2E9AFE", "separator": false}
+]
