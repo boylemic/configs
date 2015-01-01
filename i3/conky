@@ -12,35 +12,41 @@ override_utf8_locale no
 cpu_avg_samples 2
 TEXT
 ,[
+#Pacman
+{"full_text":" ","color":"\#AEB404","separator":false,"separator_block_width":6},\
+{"full_text":"[${execi 200 checkupdates | wc -l}]","color":"\#808080","separator":false,"separator_block_width":6},\
+#AUR
+{"full_text":" ","color":"\#AEB404","separator":false,"separator_block_width":6},\
+{"full_text":"[${execi 1900 cower -u | wc -l}]","color":"\#808080","separator":false,"separator_block_width":6},\
 #Kernel
-{"full_text":" :","color":"\#FF4000","separator":false,"separator_block_width":6},\
-{"full_text":"${kernel}","color":"\#808080","separator":false,"separator_block_width":6},\
+{"full_text":" ","color":"\#FF4000","separator":false,"separator_block_width":6},\
+{"full_text":"[${kernel}]","color":"\#808080","separator":false,"separator_block_width":6},\
 #{ "full_text": ": ${kernel}","color":"\#FF4000"},
 #Wifi
-{"full_text":" :","color":"\#00FF00","separator":false,"separator_block_width":6},\
-{"full_text":"${upspeed wlp2s0}","color":"\#808080","separator":false,"separator_block_width":6},\
+#{"full_text":" ","color":"\#00FF00","separator":false,"separator_block_width":6},\
+#{"full_text":"[${upspeed wlp2s0}]","color":"\#808080","separator":false,"separator_block_width":6},\
 #{"full_text": ": [${upspeed wlp2s0}] ", "color":"\#00FF00", "separator": false, "separator_block_width":6},\
 
 #Finds current volume. May need modified depending on your setup
-{"full_text":" :","color":"\#268BD2","separator":false,"separator_block_width":6},\
+{"full_text":" ","color":"\#268BD2","separator":false,"separator_block_width":6},\
 {"full_text":"${exec amixer -c 0 get Master | grep Mono: | cut -d " " -f6} ","color":"\#808080","separator":false,"separator_block_width":6},\
 #{"full_text": ": ${exec amixer -c 0 get Master | grep Mono: | cut -d " " -f6} ", "color":"\#268BD2"},
 #Brighness
-{"full_text":" :","color":"\#F7FE2E","separator":false,"separator_block_width":6},\
-{"full_text":"${exec xbacklight| awk '{printf("%d\n",$1 + 0.5)}'} ","color":"\#808080","separator":false,"separator_block_width":6},\
-#{ "full_text": ": ${exec xbacklight| awk '{printf("%d\n",$1 + 0.5)}'} ", "color":"\#F7FE2E"},
+{"full_text":" ","color":"\#F7FE2E","separator":false,"separator_block_width":6},\
+{"full_text":"[${exec xbacklight| awk '{printf("%d\n",$1 + 0.5)}'}%] ","color":"\#808080","separator":false,"separator_block_width":6},\
+#{ "full_text": ": ${exec xbacklight| awk '{printf("%d\n",$1 + 0.5)}'}% ", "color":"\#F7FE2E"},
 #CPU
-{"full_text":" :","color":"\#8D00FF","separator":false,"separator_block_width":6},\
-{"full_text":"[$cpu%]","color":"\#808080","separator":false,"separator_block_width":6},\
+#{"full_text":" ","color":"\#8D00FF","separator":false,"separator_block_width":6},\
+#{"full_text":"[$cpu%]","color":"\#808080","separator":false,"separator_block_width":6},\
 #{"full_text": " :[$cpu%] ", "color":"\#8D00FF", "separator": false, "separator_block_width":6},\
 #Battery 
-{"full_text":" :","color":"\#FF0000","separator":false,"separator_block_width":6},\
-{"full_text":"${battery_percent BAT1}%","color":"\#808080","separator":false,"separator_block_width":6},\
+{"full_text":" ","color":"\#FF0000","separator":false,"separator_block_width":6},\
+{"full_text":"[${battery_percent BAT1}%]","color":"\#808080","separator":false,"separator_block_width":6},\
 #{"full_text": ":[${battery_percent BAT1}%] ","color":"\#dedede"},
 #Calender/time
-{"full_text":" :","color":"\#2E9AFE","separator":false,"separator_block_width":6},\
+{"full_text":" ","color":"\#2E9AFE","separator":false,"separator_block_width":6},\
 {"full_text":"${time %a %b %d}","color":"\#808080","separator":false},\
 #{"full_text": " :${time %a %d %b} ${time %H:%M:%S} ","color": "\#2E9AFE", "separator": false},
-{"full_text":" :","color":"\#0404B4","separator":false,"separator_block_width":6},\
+{"full_text":" ","color":"\#0404B4","separator":false,"separator_block_width":6},\
 {"full_text":"${time %H:%M:%S} ","color":"\#808080","separator":false}
 ]
