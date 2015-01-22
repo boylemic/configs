@@ -1,9 +1,9 @@
 ! URXVT FONTS
 !------------------------------------------------
  
-!URxvt*font: xft:Droid\ Sans\ Mono\ for\ Powerline:size=8
-!URxvt*boldFont: xft:Droid\ Sans\ Mono\ for\ Powerline:bold:size=8
-URxvt*letterSpace: 0
+URxvt*font: xft:Droid\ Sans\ Mono\ for\ Powerline:size=8
+URxvt*boldFont: xft:Droid\ Sans\ Mono\ for\ Powerline:bold:size=8
+URxvt*letterSpace: 1
 URxvt*allow_bold: true
  
  
