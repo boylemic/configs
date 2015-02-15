@@ -141,3 +141,4 @@ myManageHook = composeAll
 myLayoutHook = noBorders Full ||| noBorders simpleTabbed ||| Grid
 
 
+
