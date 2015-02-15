@@ -16,6 +16,7 @@ udiskie &
 compton &
 autocutsel -fork &
 autocutsel -selection PRIMARY -fork &
+/usr/bin/start-pulseaudio-x11 &
 # exec gnome-session
 # exec startkde
 # exec startxfce4
@@ -23,4 +24,4 @@ autocutsel -selection PRIMARY -fork &
 exec awesome
 #exec mate-session
 # ...or the Window Manager of your choice
-/usr/bin/start-pulseaudio-x11
+
