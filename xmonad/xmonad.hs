@@ -6,6 +6,9 @@ import Data.Monoid
 import qualified XMonad.StackSet as W
 import qualified Data.Map        as M
 import System.Exit
+import XMonad.Layout.Grid
+import XMonad.Layout.NoBorders
+import XMonad.Layout.Tabbed
 -- The main function.
 main = xmonad =<< statusBar myBar myPP toggleStrutsKey myConfig
 
@@ -20,15 +23,16 @@ toggleStrutsKey XConfig {XMonad.modMask = modMask} = (modMask, xK_b)
 
 -- Main configuration, override the defaults to your liking.
 myConfig = defaultConfig { modMask= mod1Mask
-	         , terminal = "urxvt"
-	         , workspaces = myWorkspaces
-	         , keys = myKeys
+			 , terminal = "urxvt"
+			 , workspaces = myWorkspaces
+			 , keys = myKeys
+			 , layoutHook = myLayoutHook
                          , focusedBorderColor = "#2E9AFE"
                          , normalBorderColor = "#000000"
-                         , manageHook = myManageHook
-	         }
+			 , manageHook = myManageHook
+			 }
 
-myWorkspaces    = ["1:www","2:ter","3:mail","4:ranger","5:steam","6","7","8","9"]
+myWorkspaces    = ["1:www","2:term","3:mail","4:files","5:steam","6","7","8","9"]
 myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
  
     -- launch a terminal
@@ -41,7 +45,7 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
     , ((modMask .|. shiftMask, xK_p     ), spawn "gmrun")
  
     -- close focused window
-    , ((modMask .|. shiftMask, xK_c     ), kill)
+    , ((modMask .|. shiftMask, xK_q     ), kill)
  
      -- Rotate through the available layout algorithms
     , ((modMask,               xK_space ), sendMessage NextLayout)
@@ -60,6 +64,14 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
  
     -- Move focus to the previous window
     , ((modMask,               xK_k     ), windows W.focusUp  )
+    
+    -- Volume Control
+    , ((modMask,               xK_F11   ), spawn "amixer set Master 5%-")
+    , ((modMask,               xK_F12   ), spawn "amixer set Master 5%+")
+    
+    -- Brightness Control
+    , ((modMask,               xK_F4    ), spawn "xbacklight -dec 10")
+    , ((modMask,               xK_F5    ), spawn "xbacklight -inc 10")
  
     -- Move focus to the master window
     , ((modMask,               xK_m     ), windows W.focusMaster  )
@@ -95,7 +107,7 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
     -- , ((modm              , xK_b     ), sendMessage ToggleStruts)
  
     -- Quit xmonad
-    , ((modMask .|. shiftMask, xK_q     ), io (exitWith ExitSuccess))
+    , ((modMask .|. shiftMask, xK_e     ), io (exitWith ExitSuccess))
  
     -- Restart xmonad
     , ((modMask              , xK_q     ), spawn "xmonad --recompile; xmonad --restart")
@@ -125,5 +137,7 @@ myManageHook = composeAll
     [ className =? "stalonetray"    --> doIgnore
     
     ]
+
+myLayoutHook = noBorders Full ||| noBorders simpleTabbed ||| Grid
 
 
