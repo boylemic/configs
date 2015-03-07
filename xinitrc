@@ -20,8 +20,8 @@ autocutsel -selection PRIMARY -fork &
 # exec gnome-session
 # exec startkde
 # exec startxfce4
-#exec i3
-exec awesome
+exec i3
+#exec awesome
 #exec mate-session
 # ...or the Window Manager of your choice
 
