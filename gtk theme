@@ -1,4 +1,4 @@
-# Mstar
+# Irishluck83
 # by morning_star
 
 # Color Scheme
@@ -329,7 +329,7 @@ style "murrine-scrollbar"
 	
 	engine "murrine" {
 	#highlight_ratio = 1.3
-	scrollbar_color = "#111111"
+	scrollbar_color = "#0b0b61"
 	#glazestyle = 0
 	roundness = 1
 	rgba = FALSE
