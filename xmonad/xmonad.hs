@@ -1,5 +1,12 @@
 -- Imports.
 import XMonad
+import XMonad.Operations
+import System.IO
+import System.Exit
+import XMonad.Util.Run
+import XMonad.Actions.CycleWS
+import XMonad.Hooks.ManageHelpers
+import XMonad.Hooks.UrgencyHook
 import XMonad.Hooks.DynamicLog
 import XMonad.Hooks.ManageDocks    -- dock/tray mgmt
 import Data.Monoid
@@ -15,8 +22,14 @@ main = xmonad =<< statusBar myBar myPP toggleStrutsKey myConfig
 -- Command to launch the bar.
 myBar = "xmobar"
 
+
+
 -- Custom PP, configure it as you like. It determines what is being written to the bar.
-myPP = xmobarPP { ppCurrent = xmobarColor "#429942" "" . wrap "" "" }
+myPP = xmobarPP { ppCurrent = xmobarColor "#2E9AFE" "", ppTitle = xmobarColor "#000000" "", ppLayout =
+xmobarColor
+"#790a0a" "", ppUrgent
+ = xmobarColor "#525252" "" . wrap "[" "]" }
+
 
 -- Key binding to toggle the gap for the bar.
 toggleStrutsKey XConfig {XMonad.modMask = modMask} = (modMask, xK_b)
@@ -30,9 +43,20 @@ myConfig = defaultConfig { modMask= mod1Mask
                          , focusedBorderColor = "#2E9AFE"
                          , normalBorderColor = "#000000"
 			 , manageHook = myManageHook
+			 , mouseBindings = myMouseBindings
 			 }
 
-myWorkspaces    = ["1:www","2:term","3:mail","4:files","5:steam","6","7","8","9"]
+--myWorkspaces    = ["1:Web","2:term","3:mail","4:files","5:steam","6","7","8","9"]
+xmobarEscape = concatMap doubleLts
+  where doubleLts '<' = "<<"
+        doubleLts x   = [x]
+myWorkspaces            :: [String]
+myWorkspaces            = clickable . (map xmobarEscape) $ ["1:Web","2:Term","3:Mail","4:files","5:Steam","6","7","8","9"]
+                                                                              
+  where                                                                       
+         clickable l = [ "<action=xdotool key alt+" ++ show (n) ++ ">" ++ ws ++ "</action>" |
+                             (i,ws) <- zip [1..5] l,                                        
+                            let n = i ]
 myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
  
     -- launch a terminal
@@ -107,7 +131,7 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
     -- , ((modm              , xK_b     ), sendMessage ToggleStruts)
  
     -- Quit xmonad
-    , ((modMask .|. shiftMask, xK_e     ), io (exitWith ExitSuccess))
+    , ((modMask .|. shiftMask, xK_c     ), io (exitWith ExitSuccess))
  
     -- Restart xmonad
     , ((modMask              , xK_q     ), spawn "xmonad --recompile; xmonad --restart")
@@ -135,10 +159,38 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
 
 myManageHook = composeAll
     [ className =? "stalonetray"    --> doIgnore
-    
+      ,className =? "Steam"        --> doFloat
+      ,className =? "Fez"         --> doFloat
     ]
 
-myLayoutHook = noBorders Full ||| noBorders simpleTabbed ||| Grid
+-- Mouse bindings
+ 
+myMouseBindings (XConfig {XMonad.modMask = modm}) = M.fromList $
+ 
+    -- mod-button1, Set the window to floating mode and move by dragging
+    [ ((modm, button1), (\w -> focus w >> mouseMoveWindow w
+                                       >> windows W.shiftMaster))
+ 
+    -- mod-button2, Raise the window to the top of the stack
+    , ((modm, button2), (\w -> focus w >> windows W.shiftMaster))
+ 
+    -- mod-button3, Set the window to floating mode and resize by dragging
+    , ((modm, button3), (\w -> focus w >> mouseResizeWindow w
+                                       >> windows W.shiftMaster))
+ 
+    -- you may also bind events to the mouse scroll wheel (button4 and button5)
+    ]
 
-
-
+myLayoutHook = tiled ||| Mirror tiled |||noBorders Full ||| noBorders simpleTabbed ||| Grid
+	where
+    -- default tiling algorithm partitions the screen into two panes
+    tiled   = Tall nmaster delta ratio
+ 
+    -- The default number of windows in the master pane
+    nmaster = 1
+ 
+    -- Default proportion of screen occupied by master pane
+    ratio   = 1/2
+ 
+    -- Percent of screen to increment by when resizing panes
+    delta   = 3/100
