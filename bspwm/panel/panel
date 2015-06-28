@@ -1,0 +1,42 @@
+#!/bin/zsh
+
+. panel_colors
+
+[ -e "$PANEL_FIFO" ] && rm "$PANEL_FIFO"
+mkfifo "$PANEL_FIFO"
+
+function battery_state() {
+if [ "$(cat /sys/class/power_supply/BAT1/status)" = "Charging" ]; then
+	echo "Charging"
+else
+        while true
+        do
+                bat=$(cat /sys/class/power_supply/BAT1/capacity)
+                echo "B${bat}%"
+                sleep 30
+        done < <(echo)
+fi
+}
+
+
+function time_date() {
+	while true
+	do
+		klocka=$(date +'%A %d %B w%V  %H:%M')
+		echo "C${klocka}"
+		sleep 10
+	done < <(echo)
+}
+
+bspc control --subscribe > "$PANEL_FIFO" &
+xtitle -sf "T%s" > "$PANEL_FIFO" &
+battery_state > "$PANEL_FIFO" &
+time_date > "$PANEL_FIFO" &
+
+        PANEL_HEIGHT=14
+        PANEL_FONT_FAMILY='source code pro:medium'
+        PANEL_FONT_SIZE=9
+
+cat "$PANEL_FIFO" | panel_dzen2 -f "$PANEL_FONT_FAMILY" -s "$PANEL_FONT_SIZE" | dzen2 -h $PANEL_HEIGHT \
+-dock -ta l -title-name panel -fn "${PANEL_FONT_FAMILY}:pixelsize=${PANEL_FONT_SIZE}" -fg "$COLOR_FOREGROUND" \
+-bg "$COLOR_BACKGROUND"
