@@ -25,7 +25,7 @@ myBar = "xmobar"
 
 
 -- Custom PP, configure it as you like. It determines what is being written to the bar.
-myPP = xmobarPP { ppCurrent = xmobarColor "#2E9AFE" "", ppTitle = xmobarColor "#000000" "", ppLayout =
+myPP = xmobarPP { ppVisible = xmobarColor "red" "", ppCurrent = xmobarColor "#2E9AFE" "", ppTitle = xmobarColor "#000000" "", ppHiddenNoWindows = xmobarColor "#0B0B61" "", ppLayout =
 xmobarColor
 "#790a0a" "", ppUrgent
  = xmobarColor "#525252" "" . wrap "[" "]" }
@@ -42,20 +42,20 @@ myConfig = defaultConfig { modMask= mod1Mask
 			 , layoutHook = myLayoutHook
                          , focusedBorderColor = "#2E9AFE"
                          , normalBorderColor = "#000000"
-			 , manageHook = myManageHook
+			 , manageHook = myManageHook <+> manageHook defaultConfig
 			 , mouseBindings = myMouseBindings
 			 }
 
 --myWorkspaces    = ["1:Web","2:term","3:mail","4:files","5:steam","6","7","8","9"]
 xmobarEscape = concatMap doubleLts
   where doubleLts '<' = "<<"
-        doubleLts x   = [x]
+        doubleLts x    = [x]
 myWorkspaces            :: [String]
-myWorkspaces            = clickable . (map xmobarEscape) $ ["1:Web","2:Term","3:Mail","4:files","5:Steam","6","7","8","9"]
+myWorkspaces            = clickable . (map xmobarEscape) $ ["I","II","III","IV","V","VI","VII","VIII","IX"]
                                                                               
   where                                                                       
          clickable l = [ "<action=xdotool key alt+" ++ show (n) ++ ">" ++ ws ++ "</action>" |
-                             (i,ws) <- zip [1..5] l,                                        
+                             (i,ws) <- zip [1..9] l,                                        
                             let n = i ]
 myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
  
@@ -159,8 +159,9 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
 
 myManageHook = composeAll
     [ className =? "stalonetray"    --> doIgnore
-      ,className =? "Steam"        --> doFloat
-      ,className =? "Fez"         --> doFloat
+      ,className =? "Steam"        --> doFullFloat
+      ,className =? "hl2_linux"    --> doFloat
+      , manageDocks
     ]
 
 -- Mouse bindings
