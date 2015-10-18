@@ -1,3 +1,4 @@
+
 set from = "boylemic@gmail.com"
 set realname = "Michae Boyle"
 set imap_user = "boylemic@gmail.com"
@@ -6,12 +7,16 @@ set folder = "imaps://imap.gmail.com:993"
 set imap_check_subscribed 
 set spoolfile = "+INBOX"
 set postponed ="+[Gmail]/Drafts"
+set sort = reverse-last-date-received
 mailboxes =INBOX =family
 mailboxes imaps://imap.gmail.com/INBOX imaps://imap.gmail.com/family
 #set trash = "imaps://imap.gmail.com/[Gmail]/Trash"
 set header_cache =~/.mutt/cache/headers
 set message_cachedir =~/.mutt/cache/bodies
 set certificate_file =~/.mutt/certificates
+#set smtp_url = "smtp://twodopeshaggy@smtp.gmail.com:587/"
+#set smtp_pass = "
+##set editor="nano -t +8" 
 set editor="vim"
 set timeout = 120
 set mail_check = 60
