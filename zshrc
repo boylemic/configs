@@ -2,7 +2,9 @@
 autoload -Uz compinit promptinit
 compinit
 promptinit
-prompt adam2
+#prompt adam2
+ZSH=/home/mike/.oh-my-zsh
+ZSH_THEME="powerline"
 #History search
 [[ -n "${key[PageUp]}" ]] && bindkey "${key[PageUp]}" history-beginning-search-backward
 [[ -n "${key[PageDown]}" ]] && bindkey "${key[PageDown]}" history-beginning-search-forward
@@ -28,4 +30,5 @@ alias clock=' tty-clock -f %m/%d/%y c'
 alias news='newsbeuter'
 alias music='mocp'
 alias color='~/colorscheme.sh'
+alias pac='sudo vim /etc/pacman.conf'
 [[ -z $DISPLAY && $XDG_VTNR -eq 1 ]] && exec startx
