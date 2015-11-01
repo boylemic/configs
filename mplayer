@@ -1,0 +1,7 @@
+dvd-device= /dev/sr0
+alang=en
+softvol=yes
+softvol-max=400
+vo=xv
+ass=false
+ao="pulse"
