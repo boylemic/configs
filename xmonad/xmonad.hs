@@ -16,6 +16,7 @@ import System.Exit
 import XMonad.Layout.Grid
 import XMonad.Layout.NoBorders
 import XMonad.Layout.Tabbed
+import XMonad.Layout.Fullscreen
 -- The main function.
 main = xmonad =<< statusBar myBar myPP toggleStrutsKey myConfig
 
@@ -25,7 +26,7 @@ myBar = "xmobar"
 
 
 -- Custom PP, configure it as you like. It determines what is being written to the bar.
-myPP = xmobarPP { ppVisible = xmobarColor "red" "", ppCurrent = xmobarColor "#2E9AFE" "", ppTitle = xmobarColor "#000000" "", ppHiddenNoWindows = xmobarColor "#0B0B61" "", ppLayout =
+myPP = xmobarPP { ppVisible = xmobarColor "bright red" "", ppCurrent = xmobarColor "#2E9AFE" "", ppTitle = xmobarColor "black" "", ppHiddenNoWindows = xmobarColor "#0404B4" "", ppLayout =
 xmobarColor
 "#790a0a" "", ppUrgent
  = xmobarColor "#525252" "" . wrap "[" "]" }
@@ -39,7 +40,7 @@ myConfig = defaultConfig { modMask= mod1Mask
 			 , terminal = "urxvt"
 			 , workspaces = myWorkspaces
 			 , keys = myKeys
-			 , layoutHook = myLayoutHook
+			 , layoutHook = smartBorders $ myLayoutHook
                          , focusedBorderColor = "#2E9AFE"
                          , normalBorderColor = "#000000"
 			 , manageHook = myManageHook <+> manageHook defaultConfig
@@ -51,7 +52,7 @@ xmobarEscape = concatMap doubleLts
   where doubleLts '<' = "<<"
         doubleLts x    = [x]
 myWorkspaces            :: [String]
-myWorkspaces            = clickable . (map xmobarEscape) $ ["I","II","III","IV","V","VI","VII","VIII","IX"]
+myWorkspaces            = clickable . (map xmobarEscape) $ ["web","term","mail","file","steam","VI","VII","VIII","IX"]
                                                                               
   where                                                                       
          clickable l = [ "<action=xdotool key alt+" ++ show (n) ++ ">" ++ ws ++ "</action>" |
@@ -60,7 +61,7 @@ myWorkspaces            = clickable . (map xmobarEscape) $ ["I","II","III","IV",
 myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
  
     -- launch a terminal
-    [ ((mod1Mask .|. shiftMask, xK_Return), spawn "urxvt")
+    [ ((mod1Mask,              xK_Return), spawn "urxvt")
  
     -- launch dmenu
     , ((modMask,               xK_d     ), spawn "exe=`dmenu_path | dmenu` && eval \"exec $exe\"")
@@ -101,7 +102,7 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
     , ((modMask,               xK_m     ), windows W.focusMaster  )
  
     -- Swap the focused window and the master window
-    , ((modMask,               xK_Return), windows W.swapMaster)
+    , ((modMask .|. shiftMask, xK_Return), windows W.swapMaster)
  
     -- Swap the focused window with the next window
     , ((modMask .|. shiftMask, xK_j     ), windows W.swapDown  )
@@ -159,9 +160,13 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
 
 myManageHook = composeAll
     [ className =? "stalonetray"    --> doIgnore
-      ,className =? "Steam"        --> doFullFloat
-      ,className =? "hl2_linux"    --> doFloat
+      , className =? "Steam"        --> doFullFloat
+      , title =? "LIMBO"            --> doIgnore
+      , title =? "FEZ"              --> doIgnore
+      , title =? "NMRIH"            --> doFullFloat
+      , className =? "MPlayer"      --> doIgnore
       , manageDocks
+      , isFullscreen                --> (doF W.focusDown <+> doFullFloat)
     ]
 
 -- Mouse bindings
@@ -182,7 +187,8 @@ myMouseBindings (XConfig {XMonad.modMask = modm}) = M.fromList $
     -- you may also bind events to the mouse scroll wheel (button4 and button5)
     ]
 
-myLayoutHook = tiled ||| Mirror tiled |||noBorders Full ||| noBorders simpleTabbed ||| Grid
+myLayoutHook = avoidStruts (
+	tiled ||| Mirror tiled |||noBorders (fullscreenFull Full) ||| noBorders simpleTabbed ||| Grid)
 	where
     -- default tiling algorithm partitions the screen into two panes
     tiled   = Tall nmaster delta ratio
@@ -194,4 +200,4 @@ myLayoutHook = tiled ||| Mirror tiled |||noBorders Full ||| noBorders simpleTabb
     ratio   = 1/2
  
     -- Percent of screen to increment by when resizing panes
-    delta   = 3/100
+    delta   = 3/100 
