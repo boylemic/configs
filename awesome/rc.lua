@@ -41,7 +41,7 @@ end
 
 --Battery Widget
 bat_widget = wibox.widget.textbox()
-vicious.register(bat_widget, vicious.widgets.bat, "  $1$2 ", 32, "BAT1")
+vicious.register(bat_widget, vicious.widgets.bat, "   $1$2 ", 32, "BAT1")
 
 -- Pacman Widget
 pacwidget = wibox.widget.textbox()
@@ -69,7 +69,7 @@ vicious.register(pacwidget, vicious.widgets.pkg,
 
 -- {{{ Variable definitions
 -- Themes define colours, icons, font and wallpapers.
-beautiful.init("/home/mike/.config/awesome/themes/zenburn/theme.lua")
+beautiful.init("/usr/share/awesome/themes/zenburn/theme.lua")
 
 -- This is used later as the default terminal and editor to run.
 terminal = "urxvt"
@@ -115,7 +115,7 @@ end
 tags = {}
 for s = 1, screen.count() do
     -- Each screen has its own tag table.
-    tags[s] = awful.tag({ 1, 2, 3, 4, 5, 6, 7, 8, 9 }, s, layouts[1])
+    tags[s] = awful.tag({ "1:", "2:", "3:", "4:", "5:", 6, 7, 8, 9 }, s, layouts[1])
 end
 -- }}}
 
@@ -518,4 +518,8 @@ end)
 
 client.connect_signal("focus", function(c) c.border_color = beautiful.border_focus end)
 client.connect_signal("unfocus", function(c) c.border_color = beautiful.border_normal end)
+awful.util.spawn_with_shell("nm-applet")
+awful.util.spawn_with_shell("dropbox")
+awful.util.spawn_with_shell("volumeicon")
+
 -- }}}
