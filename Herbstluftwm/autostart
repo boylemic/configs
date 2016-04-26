@@ -1,3 +1,4 @@
+
 #!/usr/bin/env bash
 
 # this is a simple config for herbstluftwm
@@ -21,7 +22,6 @@ Mod=Mod1    # Use alt as the main modifier
 # autostart
 nitrogen --restore
 
-
 hc keybind $Mod-Shift-c quit
 hc keybind $Mod-Shift-r reload
 hc keybind $Mod-Shift-q close
@@ -30,11 +30,11 @@ hc keybind $Mod-d spawn dmenu_run
 #hc keybind $Mod-Shift-d spawn j4-dmenu-desktop
 #hc keybind $Mod-Ctrl-d spawn rofi -show run -font "gohu 9" -fg "#BEBFC2" -bg "#0D151D" -hlfg "#bebfc2" -hlbg "#464543"
 
-#hc keybind $Mod-F11 exec amixer set Master 5%-
-#hc keybind $Mod-F12 exec amixer set Master 5%+
+hc keybind $Mod-F11 spawn amixer -q set Master 5%-
+hc keybind $Mod-F12 spawn amixer -q set Master 5%+
 
-#hc keybind $Mod-F4 exec xbacklight -dec 5
-#hc keybind $Mod-F5 exec xbacklight -inc 5
+hc keybind $Mod-F4 spawn xbacklight -dec 5
+hc keybind $Mod-F5 spawn xbacklight -inc 5
 
 
 # basic movement
@@ -157,6 +157,7 @@ hc set frame_padding 0
 hc set smart_window_surroundings 0
 hc set smart_frame_surroundings 1
 hc set mouse_recenter_gap 0
+hc set focus_follows_mouse 1
 
 # rules
 hc unrule -F
@@ -170,8 +171,8 @@ hc rule windowtype='_NET_WM_WINDOW_TYPE_DIALOG' focus=on
 hc rule windowtype~'_NET_WM_WINDOW_TYPE_(NOTIFICATION|DOCK|DESKTOP)' manage=off
 
 hc rule class=firefox tag=I
-hc rule class=thunar tag=III
-hc rule class=mpv tag=IV focus=on
+hc rule class=thunar tag=IV focus=on
+hc rule class=mpv tag=III focus=on
 hc rule class=nitrogen tag=VI focus=on
 hc rule class=transmission-gtk tag=VIII
 
