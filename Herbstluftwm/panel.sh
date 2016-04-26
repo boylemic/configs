@@ -1,3 +1,4 @@
+
 #!/usr/bin/env bash
 
 hc() { "${herbstclient_command[@]:-herbstclient}" "$@" ;}
@@ -132,13 +133,27 @@ hc pad $monitor $panel_height
         fi
         bat="^fg($xicon)$batico ^fg($xtitle)bat ^fg($xfg)$bat^fg($xext)%"
         #pacman updates
-        updates=`pacman -Quq | wc -l`
-        updates="^fg($xicon)^i(/usr/share/icons/stlarch_icons/pacman1.xbm) ^fg($xtitle)pac ^fg($xfg)$updates"
+        #updates=`execi 200 checkupdates | wc -l`
+        #updates="^fg($xicon)^i(/usr/share/icons/stlarch_icons/pacman1.xbm) ^fg($xtitle)pac ^fg($xfg)$updates"
+	#volume
+	volume() {
+		local stat=$(amixer sget Master | awk '/\[on\]/{print $5}' | uniq)
+		vol_color="^fg(#efefef)"
+		  if [ -z $stat ]; then
+			  #    local iVol=$(icon spkr_02 white)
+			      local stat="$(amixer sget Master | awk '/\[off\]/{print $5}' | uniq)"
+			          vol_color=${cgrey}
+				  #  else
+				  #    local iVol=$(icon spkr_01 brightyellow)
+				    fi
+				    #  echo -n "^ca(1,$hfsdir/volume.sh Master toggle)$iVol$stat^ca()"
+				      echo -n "${vol_color}${stat}"
+			      }
         # small adjustments
 		#cpu_temp=$(echo -n $(sensors | grep "Core" | cut -b 16-19))
 		
 		#mpc_current=$(mpc current)
-		right=" $updates $separator^fg() $bat $separator^bg() $date $separator"
+		right=" $volume $separator^fg() $bat $separator^bg() $date $separator"
         right_text_only=$(echo -n "$right" | sed 's.\^[^(]*([^)]*)..g')
         # get width of right aligned text.. and add some space..
         width=$($textwidth "$font" "$right_text_only  ")
