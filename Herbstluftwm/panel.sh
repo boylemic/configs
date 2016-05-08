@@ -1,4 +1,3 @@
-
 #!/usr/bin/env bash
 
 hc() { "${herbstclient_command[@]:-herbstclient}" "$@" ;}
@@ -16,6 +15,7 @@ panel_height=16
 #font="-*-fixed-medium-*-*-*-12-*-*-*-*-*-*-*"
 #use xorg-xfontsel to pick a new font :3
 font="-*-terminesspowerline-medium-*-normal-*-12-*-*-*-*-*-*-*"
+font2="-misc-fontawesome-medium-r-normal--0-0-0-12-p-0-iso10646-1"
 #font="-*-tewi-*-*-*-*-*-*-*-*-*-*-*-*"
 bgcolor=$(hc get frame_border_normal_color)
 selbg=$(hc get window_border_active_color)
@@ -114,7 +114,8 @@ hc pad $monitor $panel_height
                 echo -n "^ca(1,\"${herbstclient_command[@]:-herbstclient}\" "
                 echo -n "focus_monitor \"$monitor\" && "
                 echo -n "\"${herbstclient_command[@]:-herbstclient}\" "
-                echo -n "use \"${i:1}\") ${i:1} ^ca()"
+                #echo -n "use \"${i:1}\") ${i:1} ^ca()"
+		echo -n "use \"${i:1}\") ^fn(FontAwesome:size=9)${i:1}^fn() ^ca()"
             else
                 # non-clickable tags if using older dzen
                 echo -n " ${i:1} "
@@ -132,28 +133,18 @@ hc pad $monitor $panel_height
             batico="^i(/usr/share/icons/stlarch_icons/batt5full.xbm)"
         fi
         bat="^fg($xicon)$batico ^fg($xtitle)bat ^fg($xfg)$bat^fg($xext)%"
-        #pacman updates
+	#Vol
+	vol=$(amixer -c 0 get Master | tail -n 1 | cut -d '[' -f 2 | sed 's/%.*//g' | sed -n 1p)
+	#vol=$(amixer sget Master,0)
+	#pacman updates
         #updates=`execi 200 checkupdates | wc -l`
         #updates="^fg($xicon)^i(/usr/share/icons/stlarch_icons/pacman1.xbm) ^fg($xtitle)pac ^fg($xfg)$updates"
-	#volume
-	volume() {
-		local stat=$(amixer sget Master | awk '/\[on\]/{print $5}' | uniq)
-		vol_color="^fg(#efefef)"
-		  if [ -z $stat ]; then
-			  #    local iVol=$(icon spkr_02 white)
-			      local stat="$(amixer sget Master | awk '/\[off\]/{print $5}' | uniq)"
-			          vol_color=${cgrey}
-				  #  else
-				  #    local iVol=$(icon spkr_01 brightyellow)
-				    fi
-				    #  echo -n "^ca(1,$hfsdir/volume.sh Master toggle)$iVol$stat^ca()"
-				      echo -n "${vol_color}${stat}"
-			      }
+	
         # small adjustments
 		#cpu_temp=$(echo -n $(sensors | grep "Core" | cut -b 16-19))
 		
-		#mpc_current=$(mpc current)
-		right=" $volume $separator^fg() $bat $separator^bg() $date $separator"
+		mpc_current=$(mpc current)
+		right="  ♫ $mpc_current $separator^fg() $vol $separator^fg() $bat $separator^bg() $date $separator"
         right_text_only=$(echo -n "$right" | sed 's.\^[^(]*([^)]*)..g')
         # get width of right aligned text.. and add some space..
         width=$($textwidth "$font" "$right_text_only  ")
