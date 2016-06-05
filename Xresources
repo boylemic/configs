@@ -1,41 +1,96 @@
-urxvt*depth:                 32
-urxvt*background:            [75]#000000
-urxvt*foreground:            #14db49
-urxvt*borderless: 1
-urxvt*scrollBar:            false
-urxvt*scrollBar_right:      false
-urxvt*saveLines:  5000
-urxvt*tintColor: grey 
+! URXVT FONTS
+!------------------------------------------------
+ 
+URxvt*font: xft:Droid\ Sans\ Mono\ for\ Powerline:size=8
+URxvt*boldFont: xft:Droid\ Sans\ Mono\ for\ Powerline:bold:size=8
+URxvt*letterSpace: -1
+URxvt*allow_bold: true
+ 
+ 
+! URXVT ENABLE LINK SUPPORT
+!------------------------------------------------
+ 
+!URxvt.perl-ext-common: default,matcher,tabbedex,vtwheel,clipboard
+!tabbed
+!URxvt.matcher.button:   1
+!URxvt.perl-ext:      default,url-select
+!URxvt.keysym.M-u: perl:url-select:select_next
+!URxvt.url-select.launcher:   /usr/bin/xdg-open
+!URxvt.url-select.underline: true
+ 
+!URxvt.perl-ext-common: default,matcher
+!URxvt.url-launcher: /usr/bin/xdg-open
+!URxvt.matcher.button: 1
+ 
+!disable the fucking bell
+URxvt.insecure:                         false
+ 
+! URXVT COPY PASTE SHORTCUTS
+!------------------------------------------------
+ 
+URxvt.keysym.M-c:                       perl:clipboard:copy
+URxvt.keysym.M-v:                       perl:clipboard:pasteq
+ 
+! URXVT SCROLLBAR AND CURSOR STYLE
+!------------------------------------------------
+ 
+URxvt*saveLines:                        300000
+URxvt.scrollBar:                        false
+!URxvt*scrollstyle:                     plain
+URxvt*cursorBlink:                      true
+URxvt*cursorUnderline:          true
+URxvt*cursorColor:                      #4e9a06
+ 
+! URXVT TABS
+!------------------------------------------------
+ 
+URxvt.tabbedex.autohide:        yes
+URxvt.tabbedex.tabbar-fg:       2
+URxvt.tabbedex.tabbar-bg:       0
+URxvt.tabbedex.tab-fg:          10
+URxvt.tabbedex.tab-bg:          0
+URxvt.tabbedex.title:           yes
+URxvt.tabbedex.new-button:  no
+ 
+! URXVT FULLSCREEN TOGGLE
+!------------------------------------------------
+ 
+URxvt.keysym.F11:                       perl:fullscreen:switch
+URxvt.perl-ext-common: default,matcher,vtwheel
+URxvt.url-launcher: /usr/bin/firefox
+URxvt.matcher.button: 1
+ 
+! URXVT COLORS
+!------------------------------------------------
+ 
+
+
+*background:                           [75]#000000
+*foreground:                            #ADADAD
+urxvt*depth: 32
 urxvt*shading: 50 
-urxvt*termName:    rxvt-256color
-
 ! Black
-urxvt*color0:                 #262729
-urxvt*color8:                 #262729
+URxvt.color0:  #000000
+URxvt.color8:  #4c4c4c
 ! Red
-urxvt*color1:                 #f92671
-urxvt*color9:                 #ff669d
-!Green
-URxvt.color2:                 #14db49
-URxvt.color10:                #a2e655
+URxvt.color1:  #cd0000
+URxvt.color9:  #ff0000
+! Green
+URxvt.color2:  #00cd00
+URxvt.color10: #00ff00
 ! Yellow
-urxvt*color3:                 #fd971f
-urxvt*color11:                #e6db74
+URxvt.color3:  #cdcd00
+URxvt.color11: #ffff00
 ! Blue
-urxvt*color4:                 #1692d0
-urxvt*color12:                #66d9ef
+URxvt.color4:  #1e90ff
+URxvt.color12: #4682b4
 ! Magenta
-urxvt*color5:                 #9e6ffe
-urxvt*color13:                #df92f6
+URxvt.color5:  #cd00cd
+URxvt.color13: #ff00ff
 ! Cyan
-urxvt*color6:                 #5e7175
-urxvt*color14:                #a3babf
+URxvt.color6:  #00cdcd
+URxvt.color14: #00ffff
 ! White
-urxvt*color7:                 #ffffff
-urxvt*color15:                #ffffff
-! Cursor
-urxvt*cursorColor:            #14db49
+URxvt.color7:  #cfcfcf
+URxvt.color15: #a8a8a8
 
-URxvt.perl-ext-common:  default,matcher,vtwheel
-URxvt.url-launcher:      /usr/bin/firefox
-URxvt.matcher.button:   1
