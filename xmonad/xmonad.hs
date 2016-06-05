@@ -26,10 +26,13 @@ myBar = "xmobar"
 
 
 -- Custom PP, configure it as you like. It determines what is being written to the bar.
-myPP = xmobarPP { ppVisible = xmobarColor "bright red" "", ppCurrent = xmobarColor "#2E9AFE" "", ppTitle = xmobarColor "black" "", ppHiddenNoWindows = xmobarColor "#0404B4" "", ppLayout =
-xmobarColor
-"#790a0a" "", ppUrgent
- = xmobarColor "#525252" "" . wrap "[" "]" }
+myPP = xmobarPP { ppVisible = xmobarColor "#404040" "", 
+                  ppCurrent = xmobarColor "#EE9A00" "", 
+                  ppTitle = xmobarColor "#FFB6B0" "", 
+  --                ppHiddenNoWindows = xmobarColor "#222222" "", 
+   --               ppLayout = xmobarColor"#790a0a" "", 
+                  ppUrgent = xmobarColor "#900000" "" . wrap "[" "]" 
+                }
 
 
 -- Key binding to toggle the gap for the bar.
@@ -37,22 +40,23 @@ toggleStrutsKey XConfig {XMonad.modMask = modMask} = (modMask, xK_b)
 
 -- Main configuration, override the defaults to your liking.
 myConfig = defaultConfig { modMask= mod1Mask
-			 , terminal = "urxvt"
-			 , workspaces = myWorkspaces
-			 , keys = myKeys
-			 , layoutHook = smartBorders $ myLayoutHook
+                         , terminal = "urxvt"
+                         , workspaces = myWorkspaces
+                         , keys = myKeys
+                         , layoutHook = smartBorders $ myLayoutHook
                          , focusedBorderColor = "#2E9AFE"
                          , normalBorderColor = "#000000"
-			 , manageHook = myManageHook <+> manageHook defaultConfig
-			 , mouseBindings = myMouseBindings
-			 }
+                         , manageHook = myManageHook <+> manageHook defaultConfig
+                         , mouseBindings = myMouseBindings
+                         , borderWidth         = 0
+                         }
 
 --myWorkspaces    = ["1:Web","2:term","3:mail","4:files","5:steam","6","7","8","9"]
 xmobarEscape = concatMap doubleLts
   where doubleLts '<' = "<<"
         doubleLts x    = [x]
 myWorkspaces            :: [String]
-myWorkspaces            = clickable . (map xmobarEscape) $ ["web","term","mail","file","steam","VI","VII","VIII","IX"]
+myWorkspaces            = clickable . (map xmobarEscape) $ ["1","2","3","4","5","6","7","8","9"]
                                                                               
   where                                                                       
          clickable l = [ "<action=xdotool key alt+" ++ show (n) ++ ">" ++ ws ++ "</action>" |
@@ -164,7 +168,7 @@ myManageHook = composeAll
       , title =? "LIMBO"            --> doIgnore
       , title =? "FEZ"              --> doIgnore
       , title =? "NMRIH"            --> doFullFloat
-      , className =? "MPlayer"      --> doIgnore
+      , className =? "firefox"      --> doFullFloat
       , manageDocks
       , isFullscreen                --> (doF W.focusDown <+> doFullFloat)
     ]
@@ -188,8 +192,8 @@ myMouseBindings (XConfig {XMonad.modMask = modm}) = M.fromList $
     ]
 
 myLayoutHook = avoidStruts (
-	tiled ||| Mirror tiled |||noBorders (fullscreenFull Full) ||| noBorders simpleTabbed ||| Grid)
-	where
+        Grid ||| Mirror tiled |||noBorders (fullscreenFull Full) ||| noBorders simpleTabbed ||| tiled)
+        where
     -- default tiling algorithm partitions the screen into two panes
     tiled   = Tall nmaster delta ratio
  
