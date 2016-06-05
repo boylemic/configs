@@ -1,7 +1,7 @@
-Config { font = "xft:termsyn:size=10"
-       , bgColor = "#000000"
-	     , fgColor = "#2945c0"
-	     , position = BottomW L 91
+Config { font = "xft:Droid Sans Mono:size=10"
+             , bgColor = "#222222"
+	     , fgColor = "#bbbbbb"
+	     , position = TopW L 100`
 	     , commands = [ Run Network "wireless" ["-L","0","-H","32","--normal","green","--high","red"] 10
 	     , Run Memory ["-t"," <usedratio>%"] 10
 	     , Run Cpu [ "-t", "<total>%", "-L","15","-H","50","--normal","green","--high","red"] 10
@@ -19,3 +19,6 @@ Config { font = "xft:termsyn:size=10"
 	     , sepChar = "%"
 	     , alignSep = "}{"
              , template = "%UnsafeStdinReader% }{ <fc=#AEB404>Cpu:</fc><fc=#808080>%cpu%</fc> | <fc=#B40404>Mem:</fc><fc=#808080>%memory%</fc> | <fc=#FF0000>Bat:</fc><fc=#808080>%battery%</fc> | <fc=#268BD2>Vol:</fc> <fc=#808080>%myvolume%</fc> | %date%"}
+
+    
+
