@@ -18,7 +18,7 @@ Config { font = "xft:Droid Sans Mono:size=10"
 	     ]
 	     , sepChar = "%"
 	     , alignSep = "}{"
-             , template = "%UnsafeStdinReader% }{ <fc=#AEB404>Cpu:</fc><fc=#808080>%cpu%</fc> | <fc=#B40404>Mem:</fc><fc=#808080>%memory%</fc> | <fc=#FF0000>Bat:</fc><fc=#808080>%battery%</fc> | <fc=#268BD2>Vol:</fc> <fc=#808080>%myvolume%</fc> | %date%"}
+             , template = "<fc=#EE9A00>λ</fc> %UnsafeStdinReader% }{ <fc=#AEB404>Cpu:</fc><fc=#808080>%cpu%</fc> | <fc=#B40404>Mem:</fc><fc=#808080>%memory%</fc> | <fc=#FF0000>Bat:</fc><fc=#808080>%battery%</fc> | <fc=#268BD2>Vol:</fc> <fc=#808080>%myvolume%</fc> | %date%"}
 
     
 
