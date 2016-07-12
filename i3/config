@@ -69,33 +69,39 @@ bindsym $mod+a focus parent
 # focus the child container
 #bindsym $mod+d focus child
 
-set $WS1 
-set $WS2 
-set $WS3 
-set $WS4 
-set $WS5 
+
+#set $WS1 
+#set $WS2 
+#set $WS3 
+#set $WS4 
+#set $WS5 
+#set $WS6 
+#set $WS7 
+#set $WS8 
+#set $WS9 
+#set $WS10 
 # switch to workspace
-bindsym $mod+1 workspace $WS1
-bindsym $mod+2 workspace $WS2
-bindsym $mod+3 workspace $WS3
-bindsym $mod+4 workspace $WS4
-bindsym $mod+5 workspace $WS5
-bindsym $mod+6 workspace 6
-bindsym $mod+7 workspace 7
-bindsym $mod+8 workspace 8
-bindsym $mod+9 workspace 9
-bindsym $mod+0 workspace 10
+bindsym $mod+1 workspace 1: 
+bindsym $mod+2 workspace 2:
+bindsym $mod+3 workspace 3:
+bindsym $mod+4 workspace 4:
+bindsym $mod+5 workspace 5:
+bindsym $mod+6 workspace 6:
+bindsym $mod+7 workspace 7:
+bindsym $mod+8 workspace 8:
+bindsym $mod+9 workspace 9:
+bindsym $mod+0 workspace 10:
 # move focused container to workspace
-bindsym $mod+Shift+1 move container to workspace $WS1
-bindsym $mod+Shift+2 move container to workspace $WS2
-bindsym $mod+Shift+3 move container to workspace $WS3
-bindsym $mod+Shift+4 move container to workspace $WS4
-bindsym $mod+Shift+5 move container to workspace $WS5
-bindsym $mod+Shift+6 move container to workspace 6
-bindsym $mod+Shift+7 move container to workspace 7
-bindsym $mod+Shift+8 move container to workspace 8
-bindsym $mod+Shift+9 move container to workspace 9
-bindsym $mod+Shift+0 move container to workspace 10
+bindsym $mod+Shift+1 move container to workspace 1: 
+bindsym $mod+Shift+2 move container to workspace 2:
+bindsym $mod+Shift+3 move container to workspace 3:
+bindsym $mod+Shift+4 move container to workspace 4:
+bindsym $mod+Shift+5 move container to workspace 5:
+bindsym $mod+Shift+6 move container to workspace 6:
+bindsym $mod+Shift+7 move container to workspace 7:
+bindsym $mod+Shift+8 move container to workspace 8:
+bindsym $mod+Shift+9 move container to workspace 9:
+bindsym $mod+Shift+0 move container to workspace 10:
 # Window border style: normal: border normal, with window title bar;
 # none: no border or window title bar; 1pixel: 1 pixel border.
 new_window none
@@ -160,22 +166,21 @@ position top
 #mode hide
 font xft:Cousine, FontAwesome 10
 colors {
-background #00000
+background #333333
 statusline #2E9AFE
 separator #00000
 #Bord #Back #Text
-focused_workspace #2E9AFE #00000 #2E9AFE
-active_workspace #2d2d2d #5f676a #dedede
-inactive_workspace #00000 #00000 #0B0B61
+focused_workspace #2E9AFE #2E9AFE #000000
+active_workspace #333333 #3333333 #7F7F7F
+inactive_workspace #333333 #333333 #7F7F7F
 urgent_workspace #000000 #000000 #900000
 }
 }
 #Start-up apps
 exec --no-startup-id nitrogen --restore
-#exec --no-startup-id /usr/bin/nm-applet
-#exec --no-startup-id volumeicon
+exec --no-startup-id /usr/bin/nm-applet
+exec --no-startup-id volumeicon
 #exec /usr/bin/pa-applet
 exec --no-startup-id dropbox
 exec --no-startup-id urxvtd -q -o -f &
 exec --no-startup-id compton -b
-exec --no-startup-id owncloud
