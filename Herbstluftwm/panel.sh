@@ -1,5 +1,14 @@
 #!/usr/bin/env bash
 
+# 
+#  ██                     ██                ██    ██           ████   ██  
+# ░██                    ░██               ░██   ░██          ░██░   ░██  
+# ░██       █████  ██████░██       ██████ ██████ ░██ ██   ██ ██████ ██████
+# ░██████  ██░░░██░░██░░█░██████  ██░░░░ ░░░██░  ░██░██  ░██░░░██░ ░░░██░ 
+# ░██░░░██░███████ ░██ ░ ░██░░░██░░█████   ░██   ░██░██  ░██  ░██    ░██  
+# ░██  ░██░██░░░░  ░██   ░██  ░██ ░░░░░██  ░██   ░██░██  ░██  ░██    ░██  
+# ░██  ░██░░██████░███   ░██████  ██████   ░░██  ███░░██████  ░██    ░░██ 
+# ░░   ░░  ░░░░░░ ░░░    ░░░░░   ░░░░░░     ░░  ░░░  ░░░░░░   ░░      ░░
 #                                     ██
 # ██████                             ░██
 #░██░░░██  ██████   ███████   █████  ░██
@@ -20,7 +29,7 @@ fi
 # geometry has the format W H X Y
 x=${geometry[0]}
 y=${geometry[1]}
-panel_width=${geometry[2]}
+panel_width=$((${geometry[2]} - 66))
 panel_height=16
 #font="-*-fixed-medium-*-*-*-12-*-*-*-*-*-*-*"
 #use xorg-xfontsel to pick a new font :3
@@ -131,8 +140,8 @@ hc pad $monitor $panel_height
                 echo -n " ${i:1} "
             fi
         done
-        echo -n "$separator"
-        echo -n "^bg()^fg() ${windowtitle//^/^^}"
+#        echo -n "$separator"
+#        echo -n "^bg()^fg() ${windowtitle//^/^^}"
         #battery
         bat=`cat /sys/class/power_supply/BAT1/capacity`
         batstat=`cat /sys/class/power_supply/BAT1/status`
@@ -219,4 +228,10 @@ hc pad $monitor $panel_height
 
 } 2> conky | dzen2 -w $panel_width -x $x -y $y -fn "$font" -h $panel_height \
     -e 'button3=;button4=exec:herbstclient use_index -1;button5=exec:herbstclient use_index +1' \
-    -ta l -bg "$bgcolor" -fg '#efefef'
+    -ta l -bg "$bgcolor" -fg '#efefef' &
+
+#wait 2 seconds then load the stanlonetray
+
+sleep 2
+
+stalonetray
