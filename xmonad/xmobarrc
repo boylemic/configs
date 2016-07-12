@@ -1,10 +1,10 @@
-Config { font = "xft:Droid Sans Mono:size=10"
-             , bgColor = "#222222"
+Config { font = "xft:Droid Sans Mono for Powerline:size=9"
+             , bgColor = "#333333"
 	     , fgColor = "#bbbbbb"
-	     , position = TopW L 100`
-	     , commands = [ Run Network "wireless" ["-L","0","-H","32","--normal","green","--high","red"] 10
+	     , position = TopW L 96`
+	     , commands = [ Run Network "wireless" ["-L","0","-H","32","--normal","green","--high","red"] 9
 	     , Run Memory ["-t"," <usedratio>%"] 10
-	     , Run Cpu [ "-t", "<total>%", "-L","15","-H","50","--normal","green","--high","red"] 10
+	     , Run Cpu [ "-t", "<total>%", "-L","15","-H","50","--normal","green","--high","red"] 9
 	     , Run BatteryP ["BAT1"]
 	     ["-t", "<left>%",
 	     "-L", "10", "-H", "80", "-p", "3",
@@ -12,13 +12,13 @@ Config { font = "xft:Droid Sans Mono:size=10"
 	     "-L", "-15", "-H", "-5",
 	     "-l", "darkgrey", "-m", "white", "-h", "grey"]
 	     600
-             , Run Com "/bin/bash" ["-c", "~/.xmonad/getvolume" ] "myvolume" 10
-	     , Run Date "%a %b %_d %Y %H:%M" "date" 10
+             , Run Com "/bin/bash" ["-c", "~/.xmonad/getvolume" ] "myvolume" 9
+	     , Run Date "%a %b %_d %Y %H:%M" "date" 9
 	     , Run UnsafeStdinReader
 	     ]
 	     , sepChar = "%"
 	     , alignSep = "}{"
-             , template = "<fc=#EE9A00>λ</fc> %UnsafeStdinReader% }{ <fc=#AEB404>Cpu:</fc><fc=#808080>%cpu%</fc> | <fc=#B40404>Mem:</fc><fc=#808080>%memory%</fc> | <fc=#FF0000>Bat:</fc><fc=#808080>%battery%</fc> | <fc=#268BD2>Vol:</fc> <fc=#808080>%myvolume%</fc> | %date%"}
+             , template = "<fc=#0080FF>λ</fc> %UnsafeStdinReader% }{ <fc=#AEB404>Cpu:</fc><fc=#808080>%cpu%</fc> | <fc=#B40404>Mem:</fc><fc=#808080>%memory%</fc> | <fc=#FF0000>Bat:</fc><fc=#808080>%battery%</fc> | <fc=#268BD2>Vol:</fc> <fc=#808080>%myvolume%</fc> | %date% |"}
 
     
 
