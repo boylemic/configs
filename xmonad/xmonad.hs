@@ -1,3 +1,4 @@
+
 -- Imports.
 import XMonad
 import XMonad.Operations
@@ -17,6 +18,9 @@ import XMonad.Layout.Grid
 import XMonad.Layout.NoBorders
 import XMonad.Layout.Tabbed
 import XMonad.Layout.Fullscreen
+import XMonad.Util.SpawnOnce
+--import System.Taffybar.XMonadLog ( dbusLog )
+
 -- The main function.
 main = xmonad =<< statusBar myBar myPP toggleStrutsKey myConfig
 
@@ -24,10 +28,9 @@ main = xmonad =<< statusBar myBar myPP toggleStrutsKey myConfig
 myBar = "xmobar"
 
 
-
 -- Custom PP, configure it as you like. It determines what is being written to the bar.
 myPP = xmobarPP { ppVisible = xmobarColor "#404040" "", 
-                  ppCurrent = xmobarColor "#EE9A00" "", 
+                  ppCurrent = xmobarColor "#0080FF" "",  
                   ppTitle = xmobarColor "#FFB6B0" "", 
   --                ppHiddenNoWindows = xmobarColor "#222222" "", 
    --               ppLayout = xmobarColor"#790a0a" "", 
@@ -39,16 +42,17 @@ myPP = xmobarPP { ppVisible = xmobarColor "#404040" "",
 toggleStrutsKey XConfig {XMonad.modMask = modMask} = (modMask, xK_b)
 
 -- Main configuration, override the defaults to your liking.
-myConfig = defaultConfig { modMask= mod1Mask
+myConfig = def { modMask= mod1Mask
                          , terminal = "urxvt"
                          , workspaces = myWorkspaces
                          , keys = myKeys
                          , layoutHook = smartBorders $ myLayoutHook
                          , focusedBorderColor = "#2E9AFE"
                          , normalBorderColor = "#000000"
-                         , manageHook = myManageHook <+> manageHook defaultConfig
+                         , manageHook = myManageHook <+> manageHook def
                          , mouseBindings = myMouseBindings
                          , borderWidth         = 0
+                         , startupHook = myStartupHook
                          }
 
 --myWorkspaces    = ["1:Web","2:term","3:mail","4:files","5:steam","6","7","8","9"]
@@ -161,6 +165,16 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
     [((m .|. modMask, key), screenWorkspace sc >>= flip whenJust (windows . f))
         | (key, sc) <- zip [xK_w, xK_e, xK_r] [0..]
         , (f, m) <- [(W.view, 0), (W.shift, shiftMask)]]
+---spawn
+--
+myStartupHook = do
+  spawnOnce "/usr/bin/stalonetray"
+  spawnOnce "nm-applet"
+  spawnOnce "volumeicon"
+  spawnOnce "dropbox"
+  spawnOnce "compton -cb"
+
+
 
 myManageHook = composeAll
     [ className =? "stalonetray"    --> doIgnore
@@ -168,7 +182,9 @@ myManageHook = composeAll
       , title =? "LIMBO"            --> doIgnore
       , title =? "FEZ"              --> doIgnore
       , title =? "NMRIH"            --> doFullFloat
+      , title =? "Portal"            --> doFullFloat
       , className =? "firefox"      --> doFullFloat
+      , className =? "mpv"          --> doFullFloat
       , manageDocks
       , isFullscreen                --> (doF W.focusDown <+> doFullFloat)
     ]
@@ -192,7 +208,7 @@ myMouseBindings (XConfig {XMonad.modMask = modm}) = M.fromList $
     ]
 
 myLayoutHook = avoidStruts (
-        Grid ||| Mirror tiled |||noBorders (fullscreenFull Full) ||| noBorders simpleTabbed ||| tiled)
+        Grid ||| tiled |||noBorders (fullscreenFull Full) ||| noBorders simpleTabbed ||| Mirror tiled)
         where
     -- default tiling algorithm partitions the screen into two panes
     tiled   = Tall nmaster delta ratio
