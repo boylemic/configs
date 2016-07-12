@@ -1,0 +1,10 @@
+# Write your default config options here!
+
+softvol-max=400
+#title="${filename}"
+idle=yes
+autofit=800
+msg-level=all=no
+
+
+
