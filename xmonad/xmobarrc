@@ -1,5 +1,8 @@
-Config { font = "xft:Droid Sans Mono for Powerline:size=9"
-             , bgColor = "#333333"
+Config {font = "xft:SFN 
+	display:size=10,FontAwesome:size=9" 
+
+--font = "xft:Droid Sans Mono for Powerline:size=9"
+             , bgColor = "#000000"
 	     , fgColor = "#bbbbbb"
 	     , position = TopW L 96`
 	     , commands = [ Run Network "wireless" ["-L","0","-H","32","--normal","green","--high","red"] 9
@@ -18,7 +21,9 @@ Config { font = "xft:Droid Sans Mono for Powerline:size=9"
 	     ]
 	     , sepChar = "%"
 	     , alignSep = "}{"
-             , template = "<fc=#0080FF>λ</fc> %UnsafeStdinReader% }{ <fc=#AEB404>Cpu:</fc><fc=#808080>%cpu%</fc> | <fc=#B40404>Mem:</fc><fc=#808080>%memory%</fc> | <fc=#FF0000>Bat:</fc><fc=#808080>%battery%</fc> | <fc=#268BD2>Vol:</fc> <fc=#808080>%myvolume%</fc> | %date% |"}
+             , template = "<fc=#0080FF>λ</fc> %UnsafeStdinReader% }{ <fc=#AEB404>:</fc><fc=#808080>%cpu%</fc> | <fc=#B40404>:</fc><fc=#808080>%memory%</fc> | <fc=#FF0000>:</fc><fc=#808080>%battery%</fc> | <fc=#268BD2>:</fc> <fc=#808080>%myvolume%</fc> | <fc=#2E9AFE> :</fc><fc=#808080>%date%</fc> |"}
 
     
+
+
 
