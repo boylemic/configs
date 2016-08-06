@@ -1,0 +1,50 @@
+# User
+user = boyle@gmail.com
+password = 
+
+# Proxy (for those who are not living in the USA)
+#control_proxy = http://127.0.0.1:9090/
+
+tls_fingerprint = 13CC51AC0C31CD96C55015C76914360F7AC41A00
+
+# Keybindings
+act_help = ?
+act_songlove = +
+act_songban = -
+act_stationaddmusic = a
+act_stationcreate = c
+act_stationdelete = d
+act_songexplain = e
+act_stationaddbygenre = g
+act_songinfo = i
+act_addshared = j
+act_songmove = m
+act_songnext = n
+act_songpause = p
+act_quit = q
+act_stationrename = r
+act_stationchange = s
+act_songtired = t
+act_upcoming = u
+act_stationselectquickmix = x
+act_voldown = (
+act_volup = )
+
+# Misc
+audio_quality = high
+
+
+fifo = /tmp/pianobar
+sort = quickmix_10_name_az
+love_icon = ♥
+ban_icon = ☠
+volume = +1
+
+# Format strings
+format_nowplaying_song = [32m%t[0m by [34m%a[0m on %l[31m%r[0m%@%s
+#format_msg_info
+#format_msg_nowplaying
+#format_msg_time
+#format_msg_err
+#format_msg_question
+#format_msg_listnmt_list_song = 
