@@ -1,0 +1,102 @@
+! URXVT FONTS
+!------------------------------------------------
+ 
+URxvt*font: xft:Droid\ Sans\ Mono\ for\ Powerline:size=8
+URxvt*boldFont: xft:Droid\ Sans\ Mono\ for\ Powerline:bold:size=8
+URxvt*letterSpace: -1
+URxvt*allow_bold: true
+ 
+ 
+! URXVT ENABLE LINK SUPPORT
+!------------------------------------------------
+ 
+!URxvt.perl-ext-common: default,matcher,tabbedex,vtwheel,clipboard
+!tabbed
+!URxvt.matcher.button:   1
+!URxvt.perl-ext:      default,url-select
+!URxvt.keysym.M-u: perl:url-select:select_next
+!URxvt.url-select.launcher:   /usr/bin/xdg-open
+!URxvt.url-select.underline: true
+ 
+!URxvt.perl-ext-common: default,matcher
+!URxvt.url-launcher: /usr/bin/xdg-open
+!URxvt.matcher.button: 1
+ 
+!disable the fucking bell
+URxvt.insecure:                         false
+ 
+! URXVT COPY PASTE SHORTCUTS
+!------------------------------------------------
+ 
+URxvt.keysym.M-c:                       perl:clipboard:copy
+URxvt.keysym.M-v:                       perl:clipboard:pasteq
+ 
+! URXVT SCROLLBAR AND CURSOR STYLE
+!------------------------------------------------
+ 
+URxvt*saveLines:                        300000
+URxvt.scrollBar:                        false
+!URxvt*scrollstyle:                     plain
+URxvt*cursorBlink:                      true
+URxvt*cursorUnderline:          true
+URxvt*cursorColor:                      #4e9a06
+ 
+! URXVT TABS
+!------------------------------------------------
+ 
+URxvt.tabbedex.autohide:        yes
+URxvt.tabbedex.tabbar-fg:       2
+URxvt.tabbedex.tabbar-bg:       0
+URxvt.tabbedex.tab-fg:          10
+URxvt.tabbedex.tab-bg:          0
+URxvt.tabbedex.title:           yes
+URxvt.tabbedex.new-button:  no
+ 
+! URXVT FULLSCREEN TOGGLE
+!------------------------------------------------
+ 
+URxvt.keysym.F11:                       perl:fullscreen:switch
+URxvt.perl-ext-common: default,matcher,vtwheel
+URxvt.url-launcher: /usr/bin/firefox
+URxvt.matcher.button: 1
+ 
+! URXVT COLORS
+!------------------------------------------------
+ 
+
+
+*background:                           [85]#000000
+*foreground:                            #ADADAD
+urxvt*depth: 32
+urxvt*shading: 50 
+! black
+*.color0:       #333366
+*.color8:       #333399
+
+! red
+*.color1:       #6666cc
+*.color9:       #9999ff
+
+! green
+*.color2:       #0099cc
+*.color10:      #00ccff
+
+! yellow
+*.color3:       #3366cc
+*.color11:      #6699ff
+
+! blue
+*.color4:       #006699
+*.color12:      #0099cc
+
+! magenta
+*.color5:       #0066ff
+*.color13:      #0099ff
+
+! cyan
+*.color6:       #669999
+*.color14:      #66cccc
+
+! white
+*.color7:       #99cccc
+*.color15:      #ccffff
