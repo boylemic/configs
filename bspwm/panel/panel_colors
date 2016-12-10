@@ -1,37 +1,48 @@
 #Bar
 COLOR_FOREGROUND='#2E9AFE'
 COLOR_BACKGROUND='#000000'
-#Other workspaces:
+
+#Other Workspaces:
 COLOR_ACTIVE_MONITOR_FG='#0B0B61'
 COLOR_ACTIVE_MONITOR_BG='#000000'
-#mulit monitor layout ??:
+
+#Multi Monitor Layout:
 COLOR_INACTIVE_MONITOR_FG='#900000'
 COLOR_INACTIVE_MONITOR_BG='#000000'
-#current workspace your on:
+
+#Current Workspace:
 COLOR_FOCUSED_OCCUPIED_FG='#2E9AFE'
 COLOR_FOCUSED_OCCUPIED_BG='#000000'
-#highlights workspaces:
+
+#Highlighted Workspace:
 COLOR_FOCUSED_FREE_FG='#dedede'
 COLOR_FOCUSED_FREE_BG='#000000'
-#urgent ??:
+
+#Current Urgent Workspace:
 COLOR_FOCUSED_URGENT_FG='#900000'
 COLOR_FOCUSED_URGENT_BG='#000000'
-#Active (has other programs in it)
+
+#Active Workspace:
 COLOR_OCCUPIED_FG='#2E9AFE'
 COLOR_OCCUPIED_BG='#000000'
-#inactive workspaces:
+
+#Inactive Workspaces:
 COLOR_FREE_FG='#0B0B61'
 COLOR_FREE_BG='#000000'
-#Urgent workspace
+
+#Urgent Workspaces:
 COLOR_URGENT_FG='#900000'
 COLOR_URGENT_BG='#000000'
-#Layout indicator
+
+#Layout Indicator
 COLOR_LAYOUT_FG='#900000'
 COLOR_LAYOUT_BG='#000000'
-#application open:
+
+#Open Application:
 COLOR_TITLE_FG='#2E9AFE'
 COLOR_TITLE_BG='#000000'
-#Status colors:
+
+#Status Colors:
 COLOR_STATUS_FG='#2E9AFE'
 COLOR_STATUS_BG='#000000'
 
