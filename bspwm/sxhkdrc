@@ -8,14 +8,14 @@ alt + shift + e
 alt + shift + q
 	bspc node -c
 
-alt + t
+alt + m
 	bspc desktop -l next
 
 alt + b
 	bspc desktop -B
-
-alt + {s,f}
-	bspc node -t {floating,fullscreen}
+# set the window state
+alt + {t,s,f}
+       bspc node -t {tiled,floating,fullscreen}
 
 alt + {grave,Tab}
 	bspc {node,desktop} -f last
@@ -31,11 +31,11 @@ alt + {o,i}
 alt + y
 	bspc node -w last.manual
 
-alt + m
+alt + a
 	bspc node -s biggest
 
 alt + {_,shift + }{h,j,k,l}
-	bspc node -{f,s} {left,down,up,right}
+	bspc node -{f,s} {west,south,north,east}
 
 alt + {_,shift + }c
 	bspc node -f {next,prev}
@@ -47,7 +47,7 @@ alt + bracket{left,right}
 	bspc desktop -f {prev,next}
 
 alt + ctrl + {h,j,k,l}
-	bspc node -p {left,down,up,right}
+	bspc node -p {west,south,north,east}
 
 alt + ctrl + {_,shift + }space
 	bspc {node -p cancel,desktop -c}
@@ -83,14 +83,17 @@ alt + Return
 alt + d
 	dmenu_run
 #Volume Control
-alt + F11
+XF86AudioLowerVolume
 	amixer set Master 5%-
-alt + F12
-	axmixer set Master 5%+
+XF86AudioRaiseVolume
+	amixer set Master 5%+
+XF86AudioMute
+        amixer set Master toggle
+
 #Brightness control
-alt + F4
+XF86MonBrightnessDown
 	xbacklight -dec 5
-alt + F5
+XF86MonBrightnessUp
 	xbacklight -inc 5
 
 alt + c 
