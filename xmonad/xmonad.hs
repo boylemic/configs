@@ -1,10 +1,10 @@
-
 -- Imports.
 import XMonad
 import XMonad.Operations
 import System.IO
 import System.Exit
 import XMonad.Util.Run
+import Graphics.X11.ExtraTypes.XF86
 import XMonad.Actions.CycleWS
 import XMonad.Hooks.ManageHelpers
 import XMonad.Hooks.UrgencyHook
@@ -30,7 +30,7 @@ myBar = "xmobar"
 
 -- Custom PP, configure it as you like. It determines what is being written to the bar.
 myPP = xmobarPP { ppVisible = xmobarColor "#404040" "", 
-                  ppCurrent = xmobarColor "#0080FF" "",  
+                  ppCurrent = xmobarColor "#DF7401" "",  
                   ppTitle = xmobarColor "#FFB6B0" "", 
   --                ppHiddenNoWindows = xmobarColor "#222222" "", 
    --               ppLayout = xmobarColor"#790a0a" "", 
@@ -99,12 +99,13 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
     , ((modMask,               xK_k     ), windows W.focusUp  )
     
     -- Volume Control
-    , ((modMask,               xK_F11   ), spawn "amixer set Master 5%-")
-    , ((modMask,               xK_F12   ), spawn "amixer set Master 5%+")
+    ,((0, xF86XK_AudioMute), spawn "amixer set Master toggle")
+    , ((0, xF86XK_AudioLowerVolume), spawn "amixer set Master 5%- unmute")
+    , ((0, xF86XK_AudioRaiseVolume), spawn "amixer set Master 5%+ unmute")
     
     -- Brightness Control
-    , ((modMask,               xK_F4    ), spawn "xbacklight -dec 10")
-    , ((modMask,               xK_F5    ), spawn "xbacklight -inc 10")
+    , ((0, xF86XK_MonBrightnessDown), spawn "xbacklight -dec 10")
+    , ((0, xF86XK_MonBrightnessUp), spawn "xbacklight -inc 10")
  
     -- Move focus to the master window
     , ((modMask,               xK_m     ), windows W.focusMaster  )
@@ -173,7 +174,7 @@ myStartupHook = do
   spawnOnce "volumeicon"
   spawnOnce "dropbox"
   spawnOnce "compton -cb"
-
+  spawnOnce "redshift-gtk"
 
 
 myManageHook = composeAll
@@ -208,7 +209,7 @@ myMouseBindings (XConfig {XMonad.modMask = modm}) = M.fromList $
     ]
 
 myLayoutHook = avoidStruts (
-        Grid ||| tiled |||noBorders (fullscreenFull Full) ||| noBorders simpleTabbed ||| Mirror tiled)
+        Grid ||| tiled |||noBorders (fullscreenFull Full) ||| Mirror tiled)
         where
     -- default tiling algorithm partitions the screen into two panes
     tiled   = Tall nmaster delta ratio
@@ -220,4 +221,4 @@ myLayoutHook = avoidStruts (
     ratio   = 1/2
  
     -- Percent of screen to increment by when resizing panes
-    delta   = 3/100 
+delta = 3/100 
