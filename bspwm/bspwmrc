@@ -22,7 +22,7 @@ bspc config normal_locked_border_color  "#3F3E3B"
 bspc config presel_border_color         "#A7BF81"
 bspc config urgent_border_color         "#EFA29A"
 
-bspc monitor -d I II III IV V VI VII VIII IX X
+bspc monitor -d {,,,,,,,,,}
 
 #bspc rule -a Gimp desktop=^8 follow=on floating=on
 #bspc rule -a Chromium desktop=^2
