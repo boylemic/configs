@@ -6,7 +6,7 @@ background "#333333"
 kludges force_icons_size
 grow_gravity NE
 icon_gravity NE
-icon_size 15
+icon_size 17
 sticky true
 #window_strut none
 window_type dock
