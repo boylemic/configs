@@ -4,7 +4,7 @@ Config {font = "xft:SFN
 --font = "xft:Droid Sans Mono for Powerline:size=9"
              , bgColor = "#000000"
 	     , fgColor = "#bbbbbb"
-	     , position = TopW L 96`
+	     , position = TopW L 95
 	     , commands = [ Run Network "wireless" ["-L","0","-H","32","--normal","green","--high","red"] 9
 	     , Run Memory ["-t"," <usedratio>%"] 10
 	     , Run Cpu [ "-t", "<total>%", "-L","15","-H","50","--normal","green","--high","red"] 9
