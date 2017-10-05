@@ -14,9 +14,11 @@ export GPG_AGENT_INFO
 sleep 2 && nitrogen --restore &
 urxvtd -q -o -f &
 udiskie &
-compton -b &
+#compton -b &
+xcompmgr -c -f -n &
 mpd &
 redshift &
+transmission-daemon &
 #nm-applet &
 #volumeicon &
 #dropbox &
@@ -30,10 +32,11 @@ autocutsel -selection PRIMARY -fork &
 # exec gnome-session
 # exec startkde
 # exec startxfce4
-#exec i3
+exec i3
 #exec awesome
 #exec mate-session
 #exec xmonad
-exec herbstluftwm
+#exec dwm
+#exec herbstluftwm
 #exec bspwm
 # ...or the Window Manger of your choice
