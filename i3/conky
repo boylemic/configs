@@ -1,23 +1,27 @@
-background no
-out_to_console yes
-out_to_x no
-max_text_width 0
-own_window no
-update_interval 0.5
-total_run_times 0
-short_units yes
-if_up_strictness address
-use_spacer right
-override_utf8_locale no
-cpu_avg_samples 2
-TEXT
-,[
+conky.config = {
+background = false,
+out_to_console = true,
+out_to_x = false,
+max_text_width = 0,
+own_window = false,
+update_interval = 0.5,
+total_run_times = 0,
+short_units = true,
+if_up_strictness = 'address',
+use_spacer = 'right',
+override_utf8_locale = false,
+cpu_avg_samples = 2,
+
+};
+
+conky.text = [[
+[
 #Pacman
-{"full_text":" ","color":"\#AEB404","separator":false,"separator_block_width":6},\
-{"full_text":"[${execi 200 checkupdates | wc -l}]","color":"\#808080","separator":false,"separator_block_width":6},\
+#{"full_text":" ","color":"\#AEB404","separator":false,"separator_block_width":6},\
+#{"full_text":"[${execi 200 checkupdates | wc -l}]","color":"\#808080","separator":false,"separator_block_width":6},\
 #AUR
-{"full_text":" ","color":"\#AEB404","separator":false,"separator_block_width":6},\
-{"full_text":"[${execi 1900 cower -u | wc -l}]","color":"\#808080","separator":false,"separator_block_width":6},\
+#{"full_text":" ","color":"\#AEB404","separator":false,"separator_block_width":6},\
+#{"full_text":"[${execi 1900 cower -u | wc -l}]","color":"\#808080","separator":false,"separator_block_width":6},\
 #Kernel
 {"full_text":" ","color":"\#FF4000","separator":false,"separator_block_width":6},\
 {"full_text":"[${kernel}]","color":"\#808080","separator":false,"separator_block_width":6},\
@@ -41,7 +45,7 @@ TEXT
 #{"full_text": " :[$cpu%] ", "color":"\#8D00FF", "separator": false, "separator_block_width":6},\
 #Battery 
 {"full_text":" ","color":"\#FF0000","separator":false,"separator_block_width":6},\
-{"full_text":"[${battery_percent BAT1}%]","color":"\#808080","separator":false,"separator_block_width":6},\
+{"full_text":"[${battery_percent BAT0}%]","color":"\#808080","separator":false,"separator_block_width":6},\
 #{"full_text": ":[${battery_percent BAT1}%] ","color":"\#dedede"},
 #Calender/time
 {"full_text":" ","color":"\#2E9AFE","separator":false,"separator_block_width":6},\
@@ -49,4 +53,5 @@ TEXT
 #{"full_text": " :${time %a %d %b} ${time %H:%M:%S} ","color": "\#2E9AFE", "separator": false},
 {"full_text":" ","color":"\#0404B4","separator":false,"separator_block_width":6},\
 {"full_text":"${time %H:%M:%S} ","color":"\#808080","separator":false}
-]
+],
+]]
