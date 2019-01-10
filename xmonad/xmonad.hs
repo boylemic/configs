@@ -1,11 +1,26 @@
+---------------------------------------------------------------------------
+--                                                                       --
+--     _|      _|  _|      _|                                      _|    --
+--       _|  _|    _|_|  _|_|    _|_|    _|_|_|      _|_|_|    _|_|_|    --
+--         _|      _|  _|  _|  _|    _|  _|    _|  _|    _|  _|    _|    --
+--       _|  _|    _|      _|  _|    _|  _|    _|  _|    _|  _|    _|    --
+--     _|      _|  _|      _|    _|_|    _|    _|    _|_|_|    _|_|_|    --
+--                                                                       --
+---------------------------------------------------------------------------
 -- Imports.
 import XMonad
 import XMonad.Operations
 import System.IO
 import System.Exit
 import XMonad.Util.Run
+import XMonad.Util.SpawnOnce
+import XMonad.Util.NamedScratchpad
+import XMonad.Util.EZConfig(additionalKeys)
+
 import Graphics.X11.ExtraTypes.XF86
 import XMonad.Actions.CycleWS
+import XMonad.Hooks.SetWMName
+import XMonad.Hooks.EwmhDesktops
 import XMonad.Hooks.ManageHelpers
 import XMonad.Hooks.UrgencyHook
 import XMonad.Hooks.DynamicLog
@@ -14,26 +29,29 @@ import Data.Monoid
 import qualified XMonad.StackSet as W
 import qualified Data.Map        as M
 import System.Exit
+--Layouts
 import XMonad.Layout.Grid
 import XMonad.Layout.NoBorders
 import XMonad.Layout.Tabbed
 import XMonad.Layout.Fullscreen
-import XMonad.Util.SpawnOnce
---import System.Taffybar.XMonadLog ( dbusLog )
+import XMonad.Layout.ToggleLayouts          -- Full window at any time
+import XMonad.Layout.IndependentScreens
+import XMonad.Layout.BinarySpacePartition
+import XMonad.Layout.Mosaic
+import XMonad.Layout.Spiral
 
 -- The main function.
 main = xmonad =<< statusBar myBar myPP toggleStrutsKey myConfig
-
 -- Command to launch the bar.
-myBar = "xmobar"
-
-
+myBar = "xmobar -x0 /home/mike/.xmonad/xmobarrc"
+myTerminal = "urxvt"
+myBrowser = "qutebrowser"
 -- Custom PP, configure it as you like. It determines what is being written to the bar.
 myPP = xmobarPP { ppVisible = xmobarColor "#404040" "", 
                   ppCurrent = xmobarColor "#DF7401" "",  
                   ppTitle = xmobarColor "#FFB6B0" "", 
   --                ppHiddenNoWindows = xmobarColor "#222222" "", 
-   --               ppLayout = xmobarColor"#790a0a" "", 
+  --                ppLayout = xmobarColor"#790a0a" "", 
                   ppUrgent = xmobarColor "#900000" "" . wrap "[" "]" 
                 }
 
@@ -42,15 +60,15 @@ myPP = xmobarPP { ppVisible = xmobarColor "#404040" "",
 toggleStrutsKey XConfig {XMonad.modMask = modMask} = (modMask, xK_b)
 
 -- Main configuration, override the defaults to your liking.
-myConfig = def { modMask= mod1Mask
-                         , terminal = "urxvt"
+myConfig = def { modMask= mod4Mask
+                         , terminal = myTerminal
                          , workspaces = myWorkspaces
                          , keys = myKeys
                          , layoutHook = smartBorders $ myLayoutHook
                          , focusedBorderColor = "#2E9AFE"
                          , normalBorderColor = "#000000"
-                         , manageHook = myManageHook <+> manageHook def
-                         , mouseBindings = myMouseBindings
+                         , mouseBindings = myMouseBindings                           
+			 , manageHook = myManageHook <+> manageHook def
                          , borderWidth         = 0
                          , startupHook = myStartupHook
                          }
@@ -60,7 +78,7 @@ xmobarEscape = concatMap doubleLts
   where doubleLts '<' = "<<"
         doubleLts x    = [x]
 myWorkspaces            :: [String]
-myWorkspaces            = clickable . (map xmobarEscape) $ ["1:\xf269","2:\xf120","3:\xf0e0","4:\xf07c","5:\xf1b6","6:\xf281;","7:\xf099" ,"8:\xf16a","9:\xf04e"]
+myWorkspaces            = clickable . (map xmobarEscape) $ ["1","2","3","4","5","6","7" ,"8","9"]
                                                                               
   where                                                                       
          clickable l = [ "<action=xdotool key alt+" ++ show (n) ++ ">" ++ ws ++ "</action>" |
@@ -69,11 +87,12 @@ myWorkspaces            = clickable . (map xmobarEscape) $ ["1:\xf269","2:\xf120
 myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
  
     -- launch a terminal
-    [ ((mod1Mask,              xK_Return), spawn "urxvt")
+    [ ((modMask,              xK_Return), spawn myTerminal)
  
     -- launch dmenu
     , ((modMask,               xK_d     ), spawn "exe=`dmenu_path | dmenu` && eval \"exec $exe\"")
  
+    , ((modMask,               xK_i     ), spawn myBrowser)
     -- launch gmrun
     , ((modMask .|. shiftMask, xK_p     ), spawn "gmrun")
  
@@ -138,15 +157,18 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
     -- Use this binding with avoidStruts from Hooks.ManageDocks.
     -- See also the statusBar function from Hooks.DynamicLog.
     --
-    -- , ((modm              , xK_b     ), sendMessage ToggleStruts)
+     , ((modMask              , xK_b     ), sendMessage ToggleStruts)
  
     -- Quit xmonad
     , ((modMask .|. shiftMask, xK_c     ), io (exitWith ExitSuccess))
  
     -- Restart xmonad
     , ((modMask              , xK_q     ), spawn "xmonad --recompile; xmonad --restart")
+    , ((modMask              , xK_o    ), namedScratchpadAction myScratchPads "terminal")
+    , ((modMask		     , xK_z    ), namedScratchpadAction myScratchPads "music")
+    , ((modMask            , xK_f), sendMessage (Toggle "Full"))
     ]
-    ++
+     ++
  
     --
     -- mod-[1..9], Switch to workspace N
@@ -172,11 +194,55 @@ myStartupHook = do
   spawnOnce "/usr/bin/stalonetray"
   spawnOnce "nm-applet"
   spawnOnce "volumeicon"
+  spawnOnce "spotify"
+  setWMName "LG3D"
   spawnOnce "dropbox"
-  spawnOnce "compton -cb"
+  spawnOnce "compton -b"
   spawnOnce "redshift-gtk"
 
+--scratchPad = scratchpadSpawnActionTerminal myTerminal
+--scratchPad = [NS "spotify" "spotify" (title =? "spotify") defaultFloating]  
+-- Scratchpad
+--
+--manageScratchPad :: ManageHook
+--manageScratchPad = scratchpadManageHook (W.RationalRect l t w h)
+--
+--  where
+--
+--    h = 1     -- terminal height, 100%
+--    w = 1       -- terminal width, 100%
+--    t = 1 - h   -- distance from top edge, 90%
+--    l = 1 - w   -- distance from left edge, 0%
+myScratchPads = [ NS "terminal" spawnTerm  findTerm manageTerm
+		, NS "music" spawnPav findPav  managePav
+		]
+	where
 
+    spawnTerm = myTerminal ++  " -name scratchpad -e cmus"
+    findTerm = resource =? "scratchpad"
+    manageTerm = customFloating $ W.RationalRect l t w h -- and I'd like it fixed using the geometry below
+
+	where
+
+        -- reusing these variables is ok since they're confined to their own 
+        -- where clauses 
+        h = 1       -- height, 10% 
+        w = 1         -- width, 100%
+        t = 1 - h     -- bottom edge
+        l = 1 -w -- centered left/right
+    spawnPav = "music"
+    findPav = className =? "Spotify"
+    managePav = customFloating $ W.RationalRect l t w h -- and I'd like it fixed using the geometry below
+
+	where
+
+        -- reusing these variables is ok since they're confined to their own 
+        -- where clauses 
+        h = 1      -- height, 10% 
+        w = 1         -- width, 100%
+        t = 1 -h      -- bottom edge
+        l = 1 -w -- centered left/right
+ 
 myManageHook = composeAll
     [ className =? "stalonetray"    --> doIgnore
       , className =? "Steam"        --> doFullFloat
@@ -188,7 +254,7 @@ myManageHook = composeAll
       , className =? "mpv"          --> doFullFloat
       , manageDocks
       , isFullscreen                --> (doF W.focusDown <+> doFullFloat)
-    ]
+    ] <+> namedScratchpadManageHook myScratchPads
 
 -- Mouse bindings
  
@@ -209,7 +275,7 @@ myMouseBindings (XConfig {XMonad.modMask = modm}) = M.fromList $
     ]
 
 myLayoutHook = avoidStruts (
-        Grid ||| tiled |||noBorders (fullscreenFull Full) ||| Mirror tiled)
+       toggleLayouts Full (Grid) ||| simpleTabbed ||| spiral (6/7) ||| mosaic 3 [1,2] ||| emptyBSP ||| toggleLayouts Full (tiled) ||| noBorders (fullscreenFull Full) ||| Mirror tiled)
         where
     -- default tiling algorithm partitions the screen into two panes
     tiled   = Tall nmaster delta ratio
