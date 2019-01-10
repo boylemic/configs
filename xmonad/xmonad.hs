@@ -41,7 +41,7 @@ import XMonad.Layout.Mosaic
 import XMonad.Layout.Spiral
 
 -- The main function.
-main = xmonad =<< statusBar myBar myPP toggleStrutsKey myConfig
+main = xmonad =<< statusBar myBar myPP toggleStrutsKey (ewmh myConfig) 
 -- Command to launch the bar.
 myBar = "xmobar -x0 /home/mike/.xmonad/xmobarrc"
 myTerminal = "urxvt"
