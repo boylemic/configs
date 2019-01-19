@@ -12,7 +12,7 @@ import XMonad
 import XMonad.Operations
 import System.IO
 import System.Exit
-import XMonad.Util.Run
+import XMonad.Util.Run(spawnPipe)
 import XMonad.Util.SpawnOnce
 import XMonad.Util.NamedScratchpad
 import XMonad.Util.EZConfig(additionalKeys)
@@ -35,23 +35,24 @@ import XMonad.Layout.NoBorders
 import XMonad.Layout.Tabbed
 import XMonad.Layout.Fullscreen
 import XMonad.Layout.ToggleLayouts          -- Full window at any time
-import XMonad.Layout.IndependentScreens
 import XMonad.Layout.BinarySpacePartition
 import XMonad.Layout.Mosaic
-import XMonad.Layout.Spiral
-
+import XMonad.Layout.ThreeColumns
 -- The main function.
-main = xmonad =<< statusBar myBar myPP toggleStrutsKey (ewmh myConfig) 
+main = do
+    cnf <- statusBar myBar myPP toggleStrutsKey myConfig
+    ( xmonad . ewmh) cnf
+
 -- Command to launch the bar.
 myBar = "xmobar -x0 /home/mike/.xmonad/xmobarrc"
 myTerminal = "urxvt"
 myBrowser = "qutebrowser"
 -- Custom PP, configure it as you like. It determines what is being written to the bar.
-myPP = xmobarPP { ppVisible = xmobarColor "#404040" "", 
-                  ppCurrent = xmobarColor "#DF7401" "",  
-                  ppTitle = xmobarColor "#FFB6B0" "", 
-  --                ppHiddenNoWindows = xmobarColor "#222222" "", 
-  --                ppLayout = xmobarColor"#790a0a" "", 
+myPP = xmobarPP { ppVisible = xmobarColor "#7F7F7F" "", 
+                  ppTitle = xmobarColor "#222222" "", 
+		  ppCurrent = xmobarColor "#2E9AFE" "",
+                  ppHidden  = xmobarColor "#7F7F7F" "",
+                  ppLayout = xmobarColor"#7F7F7F" "", 
                   ppUrgent = xmobarColor "#900000" "" . wrap "[" "]" 
                 }
 
@@ -60,7 +61,7 @@ myPP = xmobarPP { ppVisible = xmobarColor "#404040" "",
 toggleStrutsKey XConfig {XMonad.modMask = modMask} = (modMask, xK_b)
 
 -- Main configuration, override the defaults to your liking.
-myConfig = def { modMask= mod4Mask
+myConfig = def { modMask= mod1Mask
                          , terminal = myTerminal
                          , workspaces = myWorkspaces
                          , keys = myKeys
@@ -69,7 +70,7 @@ myConfig = def { modMask= mod4Mask
                          , normalBorderColor = "#000000"
                          , mouseBindings = myMouseBindings                           
 			 , manageHook = myManageHook <+> manageHook def
-                         , borderWidth         = 0
+                         , borderWidth         = 1
                          , startupHook = myStartupHook
                          }
 
@@ -95,10 +96,11 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
     , ((modMask,               xK_i     ), spawn myBrowser)
     -- launch gmrun
     , ((modMask .|. shiftMask, xK_p     ), spawn "gmrun")
- 
-    -- close focused window
+   -- close focused window    
     , ((modMask .|. shiftMask, xK_q     ), kill)
- 
+-- switch keyboard layout
+    , ((modMask .|. mod4Mask,               xK_u     ), spawn "setxkbmap -layout us")
+    , ((modMask .|. mod4Mask, xK_d     ), spawn "setxkbmap -layout dvorak") 
      -- Rotate through the available layout algorithms
     , ((modMask,               xK_space ), sendMessage NextLayout)
  
@@ -166,7 +168,21 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
     , ((modMask              , xK_q     ), spawn "xmonad --recompile; xmonad --restart")
     , ((modMask              , xK_o    ), namedScratchpadAction myScratchPads "terminal")
     , ((modMask		     , xK_z    ), namedScratchpadAction myScratchPads "music")
-    , ((modMask            , xK_f), sendMessage (Toggle "Full"))
+    , ((modMask              , xK_f), sendMessage (Toggle "Full"))
+----BSP Layout
+    , ((modMask .|. mod4Mask,               xK_l     ), sendMessage $ ExpandTowards R)
+    , ((modMask .|. mod4Mask,               xK_h     ), sendMessage $ ExpandTowards L)
+    , ((modMask .|. mod4Mask,               xK_j     ), sendMessage $ ExpandTowards D)
+    , ((modMask .|. mod4Mask,               xK_k     ), sendMessage $ ExpandTowards U)
+--    , ((modMask .|. mod4Mask .|. ctrlMask , xK_l     ), sendMessage $ ShrinkFrom R)
+--    , ((modMask .|. mod4Mask .|. ctrlMask , xK_h     ), sendMessage $ ShrinkFrom L)
+--    , ((modMask .|. mod4Mask .|. ctrlMask , xK_j     ), sendMessage $ ShrinkFrom D)
+--    , ((modMask .|. mod4Mask .|. ctrlMask , xK_k     ), sendMessage $ ShrinkFrom U)
+    , ((modMask,                           xK_r     ), sendMessage Rotate)
+    , ((modMask,                           xK_s     ), sendMessage Swap)
+    , ((modMask,                           xK_n     ), sendMessage FocusParent)
+   -- , ((modMask .|. ctrlMask,              xK_n     ), sendMessage SelectNode)
+    , ((modMask .|. shiftMask,             xK_n     ), sendMessage MoveNode)
     ]
      ++
  
@@ -246,36 +262,34 @@ myScratchPads = [ NS "terminal" spawnTerm  findTerm manageTerm
 myManageHook = composeAll
     [ className =? "stalonetray"    --> doIgnore
       , className =? "Steam"        --> doFullFloat
-      , title =? "LIMBO"            --> doIgnore
-      , title =? "FEZ"              --> doIgnore
-      , title =? "NMRIH"            --> doFullFloat
-      , title =? "Portal"            --> doFullFloat
-      , className =? "firefox"      --> doFullFloat
-      , className =? "mpv"          --> doFullFloat
+      , className =? "Firefox"      --> doFullFloat
+      , title =? "FEZ"              --> doFullFloat
+      , title =? "Don't Starve"     --> doFullFloat
+--      , className =? "mpv"          --> doFullFloat
       , manageDocks
       , isFullscreen                --> (doF W.focusDown <+> doFullFloat)
     ] <+> namedScratchpadManageHook myScratchPads
 
 -- Mouse bindings
  
-myMouseBindings (XConfig {XMonad.modMask = modm}) = M.fromList $
+myMouseBindings (XConfig {XMonad.modMask = modMask}) = M.fromList $
  
     -- mod-button1, Set the window to floating mode and move by dragging
-    [ ((modm, button1), (\w -> focus w >> mouseMoveWindow w
+    [ ((modMask, button1), (\w -> focus w >> mouseMoveWindow w
                                        >> windows W.shiftMaster))
  
     -- mod-button2, Raise the window to the top of the stack
-    , ((modm, button2), (\w -> focus w >> windows W.shiftMaster))
+    , ((modMask, button2), (\w -> focus w >> windows W.shiftMaster))
  
     -- mod-button3, Set the window to floating mode and resize by dragging
-    , ((modm, button3), (\w -> focus w >> mouseResizeWindow w
+    , ((modMask, button3), (\w -> focus w >> mouseResizeWindow w
                                        >> windows W.shiftMaster))
  
     -- you may also bind events to the mouse scroll wheel (button4 and button5)
     ]
 
 myLayoutHook = avoidStruts (
-       toggleLayouts Full (Grid) ||| simpleTabbed ||| spiral (6/7) ||| mosaic 3 [1,2] ||| emptyBSP ||| toggleLayouts Full (tiled) ||| noBorders (fullscreenFull Full) ||| Mirror tiled)
+       toggleLayouts Full (Grid) ||| toggleLayouts Full (ThreeColMid 1 (1/20) (1/2)) ||| simpleTabbed ||| toggleLayouts Full (tiled) ||| noBorders (fullscreenFull Full) ||| Mirror tiled)
         where
     -- default tiling algorithm partitions the screen into two panes
     tiled   = Tall nmaster delta ratio
