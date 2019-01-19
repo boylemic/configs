@@ -1,0 +1,48 @@
+Config 
+	     {font = "xft:SFN display:size=12,FontAwesome:size=12" 
+
+	     ,additionalFonts = ["xft:Droid Sans Mono for Powerline:size=12"]
+
+             , bgColor = "#222222"
+	     , fgColor = "#222222"
+	     , position = TopW L 100 
+	     , allDesktops = True
+	     , commands = [ Run Network "wlo1" ["-L","0","-H","32","--normal","green","--high","red"] 12
+	     , Run Memory ["-t"," <usedratio>%"] 12
+	     , Run DynNetwork
+              [ "-t" , "<fc=#DF7401></fc> <fc=#7F7F7F><tx>kB/s </fc> | <fc=#DF7401></fc> <fc=#7F7F7F><rx>kB/s </fc>"
+                             , "--Low"      , "1000"       -- units: B/s
+                             , "--High"     , "5000"       -- units: B/s
+                             , "--low"      , "darkgreen"
+                             , "--normal"   , "darkorange"
+                             , "--high"     , "darkred"
+              ] 10 
+	     , Run Cpu [ "-t", "<total>%", "-L","15","-H","50","--normal","green","--high","red"] 12
+	     , Run BatteryP ["BAT0"]
+	     ["-t", "<left>%",
+	     "-L", "10", "-H", "80", "-p", "3",
+	     "--", "-O", "<fc=darkgrey>On</fc> - ", "-i", "",
+	     "-L", "-15", "-H", "-5",
+	     "-l", "darkgrey", "-m", "white", "-h", "grey"]
+	     600
+             , Run Com "/bin/bash" ["-c", "~/.xmonad/getvolume" ] "myvolume" 12
+	     , Run Date "%b %_d   <fc=#0404B4></fc> %H:%M:%S" "date" 12
+	     ,Run Com "/bin/bash" ["-c", "echo `xbacklight -get | grep -oE '^.[0-9]{0,3}'`%"]  "mybright" 5
+	     , Run Kbd            [ ("us(dvorak)" , "<fc=#808080>[DV]</fc>")
+                             , ("us"         , "<fc=#808080>[US]</fc>")
+                             ] 
+	     , Run UnsafeStdinReader
+	     ]
+	     , sepChar = "%"
+	     , alignSep = "}{"
+             , template = "<fc=#2E9AFE>λ</fc> %UnsafeStdinReader% }{  <fc=#04B404></fc>  %kbd%  %dynnetwork%   <fc=#268BD2></fc>  <fc=#808080>[%myvolume%]</fc>  <fc=#F7FE2E></fc> <fc=#808080>[%mybright%]</fc>  <fc=#FF0000></fc> <fc=#808080>[%battery%]</fc>    <fc=#2E9AFE> </fc>  <fc=#808080>%date%</fc>  "}
+
+    
+   
+
+
+
+    
+   
+
+
