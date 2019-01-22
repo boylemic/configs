@@ -1,13 +1,12 @@
----------------------------------------------------------------------------
---                                                                       --
---     _|      _|  _|      _|                                      _|    --
---       _|  _|    _|_|  _|_|    _|_|    _|_|_|      _|_|_|    _|_|_|    --
---         _|      _|  _|  _|  _|    _|  _|    _|  _|    _|  _|    _|    --
---       _|  _|    _|      _|  _|    _|  _|    _|  _|    _|  _|    _|    --
---     _|      _|  _|      _|    _|_|    _|    _|    _|_|_|    _|_|_|    --
---                                                                       --
----------------------------------------------------------------------------
--- Imports.
+-------------------------------------------------
+--   __   __                                _  --
+--   \ \ / /                               | | --
+--    \ V / _ __ ___   ___  _ __   __ _  __| | --      
+--     > < | '_ ` _ \ / _ \| '_ \ / _` |/ _` | --
+--    / . \| | | | | | (_) | | | | (_| | (_| | --
+--   /_/ \_\_| |_| |_|\___/|_| |_|\__,_|\__,_| --
+-------------------------------------------------                                
+-- Imports
 import XMonad
 import XMonad.Operations
 import System.IO
@@ -79,7 +78,7 @@ xmobarEscape = concatMap doubleLts
   where doubleLts '<' = "<<"
         doubleLts x    = [x]
 myWorkspaces            :: [String]
-myWorkspaces            = clickable . (map xmobarEscape) $ ["1","2","3","4","5","6","7" ,"8","9"]
+myWorkspaces            = clickable . (map xmobarEscape) $ ["1:\xf269","2:\xf120","3:\xf0e0", "4:\xf07c","5:\xf1b6","6:\xf281","7:\xf04b","8:\xf167","9"]
                                                                               
   where                                                                       
          clickable l = [ "<action=xdotool key alt+" ++ show (n) ++ ">" ++ ws ++ "</action>" |
@@ -95,7 +94,7 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
  
     , ((modMask,               xK_i     ), spawn myBrowser)
     -- launch gmrun
-    , ((modMask .|. shiftMask, xK_p     ), spawn "gmrun")
+    , ((modMask .|. shiftMask, xK_p     ), spawn "rofi -show")
    -- close focused window    
     , ((modMask .|. shiftMask, xK_q     ), kill)
 -- switch keyboard layout
@@ -289,7 +288,7 @@ myMouseBindings (XConfig {XMonad.modMask = modMask}) = M.fromList $
     ]
 
 myLayoutHook = avoidStruts (
-       toggleLayouts Full (Grid) ||| toggleLayouts Full (ThreeColMid 1 (1/20) (1/2)) ||| simpleTabbed ||| toggleLayouts Full (tiled) ||| noBorders (fullscreenFull Full) ||| Mirror tiled)
+       toggleLayouts Full (Grid) ||| toggleLayouts Full (ThreeColMid 1 (1/20) (1/2)) ||| simpleTabbed ||| toggleLayouts Full (tiled) ||| Mirror tiled)
         where
     -- default tiling algorithm partitions the screen into two panes
     tiled   = Tall nmaster delta ratio
