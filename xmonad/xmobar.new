@@ -1,7 +1,15 @@
+------------------------------------------------
+--   __   __                _                 --		
+--   \ \ / /               | |                --
+--    \ V / _ __ ___   ___ | |__   __ _ _ __  -- 
+--     > < | '_ ` _ \ / _ \| '_ \ / _` | '__| --
+--    / . \| | | | | | (_) | |_) | (_| | |    --
+--   /_/ \_\_| |_| |_|\___/|_.__/ \__,_|_|    --
+------------------------------------------------                                                                            
 Config 
 	     {font = "xft:SFN display:size=12,FontAwesome:size=12" 
 
-	     ,additionalFonts = ["xft:Droid Sans Mono for Powerline:size=12"]
+	     ,additionalFonts = ["xft:Droid Sans Mono for Powerline:bold:pixelsize=14:antialias=true:hinting=true"]
 
              , bgColor = "#222222"
 	     , fgColor = "#222222"
@@ -26,7 +34,7 @@ Config
 	     "-l", "darkgrey", "-m", "white", "-h", "grey"]
 	     600
              , Run Com "/bin/bash" ["-c", "~/.xmonad/getvolume" ] "myvolume" 12
-	     , Run Date "%b %_d   <fc=#0404B4></fc> %H:%M:%S" "date" 12
+	     , Run Date "%a %b %_d   <fc=#0404B4></fc> %H:%M:%S" "date" 12
 	     ,Run Com "/bin/bash" ["-c", "echo `xbacklight -get | grep -oE '^.[0-9]{0,3}'`%"]  "mybright" 5
 	     , Run Kbd            [ ("us(dvorak)" , "<fc=#808080>[DV]</fc>")
                              , ("us"         , "<fc=#808080>[US]</fc>")
@@ -35,7 +43,7 @@ Config
 	     ]
 	     , sepChar = "%"
 	     , alignSep = "}{"
-             , template = "<fc=#2E9AFE>λ</fc> %UnsafeStdinReader% }{  <fc=#04B404></fc>  %kbd%  %dynnetwork%   <fc=#268BD2></fc>  <fc=#808080>[%myvolume%]</fc>  <fc=#F7FE2E></fc> <fc=#808080>[%mybright%]</fc>  <fc=#FF0000></fc> <fc=#808080>[%battery%]</fc>    <fc=#2E9AFE> </fc>  <fc=#808080>%date%</fc>  "}
+             , template = "<fc=#2E9AFE>λ</fc> %UnsafeStdinReader% }{  <fc=#04B404></fc>  %kbd%  %dynnetwork%   <fc=#268BD2></fc>  <fc=#808080>[%myvolume%]</fc>  <fc=#F7FE2E></fc> <fc=#808080>[%mybright%]</fc>  <fc=#FF0000></fc> <fc=#808080>[%battery%]</fc>    <fc=#2E9AFE> </fc>  <fc=#808080>%date%</fc>  "}
 
     
    
