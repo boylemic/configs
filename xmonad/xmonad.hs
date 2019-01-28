@@ -13,6 +13,7 @@ import System.IO
 import System.Exit
 import XMonad.Util.Run(spawnPipe)
 import XMonad.Util.SpawnOnce
+import XMonad.Actions.SpawnOn
 import XMonad.Util.NamedScratchpad
 import XMonad.Util.EZConfig(additionalKeys)
 
@@ -37,42 +38,11 @@ import XMonad.Layout.ToggleLayouts          -- Full window at any time
 import XMonad.Layout.BinarySpacePartition
 import XMonad.Layout.Mosaic
 import XMonad.Layout.ThreeColumns
--- The main function.
-main = do
-    cnf <- statusBar myBar myPP toggleStrutsKey myConfig
-    ( xmonad . ewmh) cnf
-
--- Command to launch the bar.
-myBar = "xmobar -x0 /home/mike/.xmonad/xmobarrc"
+---myBar = "xmobar -x0 /home/mike/.xmonad/xmobarrc"
 myTerminal = "urxvt"
 myBrowser = "qutebrowser"
--- Custom PP, configure it as you like. It determines what is being written to the bar.
-myPP = xmobarPP { ppVisible = xmobarColor "#7F7F7F" "", 
-                  ppTitle = xmobarColor "#222222" "", 
-		  ppCurrent = xmobarColor "#2E9AFE" "",
-                  ppHidden  = xmobarColor "#7F7F7F" "",
-                  ppLayout = xmobarColor"#7F7F7F" "", 
-                  ppUrgent = xmobarColor "#900000" "" . wrap "[" "]" 
-                }
-
-
--- Key binding to toggle the gap for the bar.
+---- Key binding to toggle the gap for the bar.
 toggleStrutsKey XConfig {XMonad.modMask = modMask} = (modMask, xK_b)
-
--- Main configuration, override the defaults to your liking.
-myConfig = def { modMask= mod1Mask
-                         , terminal = myTerminal
-                         , workspaces = myWorkspaces
-                         , keys = myKeys
-                         , layoutHook = smartBorders $ myLayoutHook
-                         , focusedBorderColor = "#2E9AFE"
-                         , normalBorderColor = "#000000"
-                         , mouseBindings = myMouseBindings                           
-			 , manageHook = myManageHook <+> manageHook def
-                         , borderWidth         = 1
-                         , startupHook = myStartupHook
-                         }
-
 --myWorkspaces    = ["1:Web","2:term","3:mail","4:files","5:steam","6","7","8","9"]
 xmobarEscape = concatMap doubleLts
   where doubleLts '<' = "<<"
@@ -94,13 +64,13 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
  
     , ((modMask,               xK_i     ), spawn myBrowser)
     -- launch gmrun
-    , ((modMask .|. shiftMask, xK_p     ), spawn "rofi -show")
+    , ((modMask .|. shiftMask, xK_p     ), spawn "rofi -dmenu")
    -- close focused window    
     , ((modMask .|. shiftMask, xK_q     ), kill)
 -- switch keyboard layout
     , ((modMask .|. mod4Mask,               xK_u     ), spawn "setxkbmap -layout us")
     , ((modMask .|. mod4Mask, xK_d     ), spawn "setxkbmap -layout dvorak") 
-     -- Rotate through the available layout algorithms
+    -- Rotate through the available layout algorithms
     , ((modMask,               xK_space ), sendMessage NextLayout)
  
     --  Reset the layouts on the current workspace to default
@@ -117,7 +87,6 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
  
     -- Move focus to the previous window
     , ((modMask,               xK_k     ), windows W.focusUp  )
-    
     -- Volume Control
     ,((0, xF86XK_AudioMute), spawn "amixer set Master toggle")
     , ((0, xF86XK_AudioLowerVolume), spawn "amixer set Master 5%- unmute")
@@ -146,6 +115,7 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
     , ((modMask,               xK_l     ), sendMessage Expand)
  
     -- Push window back into tiling
+
     , ((modMask,               xK_t     ), withFocused $ windows . W.sink)
  
     -- Increment the number of windows in the master area
@@ -209,25 +179,12 @@ myStartupHook = do
   spawnOnce "/usr/bin/stalonetray"
   spawnOnce "nm-applet"
   spawnOnce "volumeicon"
-  spawnOnce "spotify"
+  spawn "spotify"
   setWMName "LG3D"
   spawnOnce "dropbox"
   spawnOnce "compton -b"
   spawnOnce "redshift-gtk"
 
---scratchPad = scratchpadSpawnActionTerminal myTerminal
---scratchPad = [NS "spotify" "spotify" (title =? "spotify") defaultFloating]  
--- Scratchpad
---
---manageScratchPad :: ManageHook
---manageScratchPad = scratchpadManageHook (W.RationalRect l t w h)
---
---  where
---
---    h = 1     -- terminal height, 100%
---    w = 1       -- terminal width, 100%
---    t = 1 - h   -- distance from top edge, 90%
---    l = 1 - w   -- distance from left edge, 0%
 myScratchPads = [ NS "terminal" spawnTerm  findTerm manageTerm
 		, NS "music" spawnPav findPav  managePav
 		]
@@ -301,3 +258,33 @@ myLayoutHook = avoidStruts (
  
     -- Percent of screen to increment by when resizing panes
 delta = 3/100 
+----Main Function
+main = do
+    xmproc <- spawnPipe ("xmobar $HOME/.xmonad/xmobarrc")
+    xmonad $ ewmh $ docks $ defaults {
+	logHook = dynamicLogWithPP $ xmobarPP {
+	    ppOutput = hPutStrLn xmproc
+	   ,ppVisible = xmobarColor "#7F7F7F" "" 
+	   ,ppTitle = xmobarColor "#222222" "" 
+	   ,ppCurrent = xmobarColor "#2E9AFE" ""
+           ,ppHidden  = xmobarColor "#7F7F7F" ""
+	   ,ppLayout = xmobarColor"#7F7F7F" ""
+           ,ppUrgent = xmobarColor "#900000" "" . wrap "[" "]" 
+        }
+	, manageHook = manageDocks <+> myManageHook
+	, startupHook = myStartupHook
+    }
+
+defaults = defaultConfig {
+    modMask= mod1Mask
+    , terminal = myTerminal
+    , workspaces = myWorkspaces
+    , keys = myKeys
+    , layoutHook = smartBorders $ myLayoutHook
+    , focusedBorderColor = "#2E9AFE"
+    , normalBorderColor = "#000000"
+    , mouseBindings = myMouseBindings                           
+    , manageHook = myManageHook <+> manageHook def
+    , borderWidth         = 1
+    , startupHook = myStartupHook
+    }
