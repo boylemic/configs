@@ -9,11 +9,11 @@
 Config 
 	     {font = "xft:SFN display:size=12,FontAwesome:size=12" 
 
-	     ,additionalFonts = ["xft:Droid Sans Mono for Powerline:bold:pixelsize=14:antialias=true:hinting=true"]
+	     ,additionalFonts = ["xft:Droid Sans Mono for Powerline:bold:pixelsize=12:antialias=true:hinting=true"]
 
              , bgColor = "#222222"
 	     , fgColor = "#222222"
-	     , position = TopW L 100 
+	     , position = TopP 0 138
 	     , allDesktops = True
 	     , commands = [ Run Network "wlo1" ["-L","0","-H","32","--normal","green","--high","red"] 12
 	     , Run Memory ["-t"," <usedratio>%"] 12
