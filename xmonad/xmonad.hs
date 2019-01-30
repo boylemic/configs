@@ -51,7 +51,7 @@ myWorkspaces            :: [String]
 myWorkspaces            = clickable . (map xmobarEscape) $ ["1:\xf269","2:\xf120","3:\xf0e0", "4:\xf07c","5:\xf1b6","6:\xf281","7:\xf04b","8:\xf167","9"]
                                                                               
   where                                                                       
-         clickable l = [ "<action=xdotool key alt+" ++ show (n) ++ ">" ++ ws ++ "</action>" |
+         clickable l = [ "<action=xdotool key super+" ++ show (n) ++ ">" ++ ws ++ "</action>" |
                              (i,ws) <- zip [1..9] l,                                        
                             let n = i ]
 myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
@@ -64,13 +64,13 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
  
     , ((modMask,               xK_i     ), spawn myBrowser)
     -- launch gmrun
-    , ((modMask .|. shiftMask, xK_p     ), spawn "rofi -dmenu")
+    , ((modMask .|. shiftMask, xK_p     ), spawn "rofi -show")
    -- close focused window    
-    , ((modMask .|. shiftMask, xK_q     ), kill)
+    , ((modMask .|. shiftMask, xK_BackSpace     ), kill)
 -- switch keyboard layout
-    , ((modMask .|. mod4Mask,               xK_u     ), spawn "setxkbmap -layout us")
-    , ((modMask .|. mod4Mask, xK_d     ), spawn "setxkbmap -layout dvorak") 
-    -- Rotate through the available layout algorithms
+    , ((modMask .|. mod1Mask,               xK_u     ), spawn "setxkbmap -layout us")
+    , ((modMask .|. mod1Mask, xK_d     ), spawn "setxkbmap -layout dvorak") 
+    --- Rotate through the available layout algorithms
     , ((modMask,               xK_space ), sendMessage NextLayout)
  
     --  Reset the layouts on the current workspace to default
@@ -131,27 +131,27 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
      , ((modMask              , xK_b     ), sendMessage ToggleStruts)
  
     -- Quit xmonad
-    , ((modMask .|. shiftMask, xK_c     ), io (exitWith ExitSuccess))
+    , ((modMask .|. shiftMask, xK_q     ), io (exitWith ExitSuccess))
  
     -- Restart xmonad
-    , ((modMask              , xK_q     ), spawn "xmonad --recompile; xmonad --restart")
+    , ((mod1Mask .|. shiftMask             , xK_r     ), spawn "xmonad --recompile; xmonad --restart")
     , ((modMask              , xK_o    ), namedScratchpadAction myScratchPads "terminal")
-    , ((modMask		     , xK_z    ), namedScratchpadAction myScratchPads "music")
+    , ((modMask		     , xK_p    ), namedScratchpadAction myScratchPads "music")
     , ((modMask              , xK_f), sendMessage (Toggle "Full"))
 ----BSP Layout
-    , ((modMask .|. mod4Mask,               xK_l     ), sendMessage $ ExpandTowards R)
-    , ((modMask .|. mod4Mask,               xK_h     ), sendMessage $ ExpandTowards L)
-    , ((modMask .|. mod4Mask,               xK_j     ), sendMessage $ ExpandTowards D)
-    , ((modMask .|. mod4Mask,               xK_k     ), sendMessage $ ExpandTowards U)
---    , ((modMask .|. mod4Mask .|. ctrlMask , xK_l     ), sendMessage $ ShrinkFrom R)
---    , ((modMask .|. mod4Mask .|. ctrlMask , xK_h     ), sendMessage $ ShrinkFrom L)
---    , ((modMask .|. mod4Mask .|. ctrlMask , xK_j     ), sendMessage $ ShrinkFrom D)
---    , ((modMask .|. mod4Mask .|. ctrlMask , xK_k     ), sendMessage $ ShrinkFrom U)
-    , ((modMask,                           xK_r     ), sendMessage Rotate)
-    , ((modMask,                           xK_s     ), sendMessage Swap)
-    , ((modMask,                           xK_n     ), sendMessage FocusParent)
-   -- , ((modMask .|. ctrlMask,              xK_n     ), sendMessage SelectNode)
-    , ((modMask .|. shiftMask,             xK_n     ), sendMessage MoveNode)
+--    , ((modMask .|. mod4Mask,               xK_l     ), sendMessage $ ExpandTowards R)
+--    , ((modMask .|. mod4Mask,               xK_h     ), sendMessage $ ExpandTowards L)
+--    , ((modMask .|. mod4Mask,               xK_j     ), sendMessage $ ExpandTowards D)
+--    , ((modMask .|. mod4Mask,               xK_k     ), sendMessage $ ExpandTowards U)
+----    , ((modMask .|. mod4Mask .|. ctrlMask , xK_l     ), sendMessage $ ShrinkFrom R)
+----    , ((modMask .|. mod4Mask .|. ctrlMask , xK_h     ), sendMessage $ ShrinkFrom L)
+----    , ((modMask .|. mod4Mask .|. ctrlMask , xK_j     ), sendMessage $ ShrinkFrom D)
+----    , ((modMask .|. mod4Mask .|. ctrlMask , xK_k     ), sendMessage $ ShrinkFrom U)
+--    , ((modMask,                           xK_r     ), sendMessage Rotate)
+--    , ((modMask,                           xK_s     ), sendMessage Swap)
+--    , ((modMask,                           xK_n     ), sendMessage FocusParent)
+--   -- , ((modMask .|. ctrlMask,              xK_n     ), sendMessage SelectNode)
+--    , ((modMask .|. shiftMask,             xK_n     ), sendMessage MoveNode)
     ]
      ++
  
@@ -176,14 +176,13 @@ myKeys conf@(XConfig {XMonad.modMask = modMask}) = M.fromList $
 ---spawn
 --
 myStartupHook = do
-  spawnOnce "/usr/bin/stalonetray"
-  spawnOnce "nm-applet"
-  spawnOnce "volumeicon"
-  spawn "spotify"
+  spawn "/usr/bin/stalonetray"
+  spawn "nm-applet"
+  spawn "volumeicon"
   setWMName "LG3D"
-  spawnOnce "dropbox"
+  spawn "dropbox"
   spawnOnce "compton -b"
-  spawnOnce "redshift-gtk"
+  spawn "redshift-gtk"
 
 myScratchPads = [ NS "terminal" spawnTerm  findTerm manageTerm
 		, NS "music" spawnPav findPav  managePav
@@ -202,7 +201,7 @@ myScratchPads = [ NS "terminal" spawnTerm  findTerm manageTerm
         w = 1         -- width, 100%
         t = 1 - h     -- bottom edge
         l = 1 -w -- centered left/right
-    spawnPav = "music"
+    spawnPav = "spotify"
     findPav = className =? "Spotify"
     managePav = customFloating $ W.RationalRect l t w h -- and I'd like it fixed using the geometry below
 
@@ -275,8 +274,8 @@ main = do
 	, startupHook = myStartupHook
     }
 
-defaults = defaultConfig {
-    modMask= mod1Mask
+defaults = def{
+    modMask= mod4Mask
     , terminal = myTerminal
     , workspaces = myWorkspaces
     , keys = myKeys
