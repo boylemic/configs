@@ -1,88 +1,133 @@
 #
-#bspwm hotkeys
-#
-
-alt + shift + e
-	pkill panel;bspc quit
-
-alt + shift + q
-	bspc node -c
-
-alt + m
-	bspc desktop -l next
-
-alt + b
-	bspc desktop -B
-# set the window state
-alt + {t,s,f}
-       bspc node -t {tiled,floating,fullscreen}
-
-alt + {grave,Tab}
-	bspc {node,desktop} -f last
-
-alt + apostrophe
-	bspc node -s last
-
-alt + {o,i}
-	bspc control --record-history off; \
-	bspc node {older,newer} -f; \
-	bspc control --record-history on
-
-alt + y
-	bspc node -w last.manual
-
-alt + a
-	bspc node -s biggest
-
-alt + {_,shift + }{h,j,k,l}
-	bspc node -{f,s} {west,south,north,east}
-
-alt + {_,shift + }c
-	bspc node -f {next,prev}
-
-alt + {comma,period}
-	bspc desktop -C {backward,forward}
-
-alt + bracket{left,right}
-	bspc desktop -f {prev,next}
-
-alt + ctrl + {h,j,k,l}
-	bspc node -p {west,south,north,east}
-
-alt + ctrl + {_,shift + }space
-	bspc {node -p cancel,desktop -c}
-
-alt + super + {h,j,k,l}
-	bspc node -e {left -10,down +10,up -10,right +10}
-
-alt + super + shift + {h,j,k,l}
-	bspc node -e {right -10,up +10,down -10,left +10}
-
-alt + ctrl + {1-9}
-	bspc node -r 0.{1-9}
-
-alt + {_,shift + }{1-9,0}
-	bspc {desktop -f,node -d} ^{1-9,10}
-
-~button1
-	bspc pointer -g focus
-
-alt + button{1-3}
-	; bspc pointer -g {move,resize_side,resize_corner}
-
-alt + @button{1-3}
-	bspc pointer -u
-
-#
 # wm independent hotkeys
 #
 
-alt + Return
+# terminal emulator
+super + Return
 	urxvt
 
-alt + d
+# program launcher
+super + @space
 	dmenu_run
-#Volume Control
+
+# make sxhkd reload its configuration files:
+super + Escape
+	pkill -USR1 -x sxhkd
+
+#
+# bspwm hotkeys
+#
+
+# quit/restart bspwm
+super + alt + {q,r}
+	bspc {quit,wm -r}
+
+# close and kill
+super + {_,shift + }q
+	bspc node -{c,k}
+
+# alternate between the tiled and monocle layout
+super + m
+	bspc desktop -l next
+
+# send the newest marked node to the newest preselected node
+super + y
+	bspc node newest.marked.local -n newest.!automatic.local
+
+# swap the current node and the biggest node
+super + g
+	bspc node -s biggest
+
+#
+# state/flags
+#
+
+# set the window state
+super + {t,shift + t,s,f}
+	bspc node -t {tiled,pseudo_tiled,floating,fullscreen}
+
+# set the node flags
+super + ctrl + {m,x,y,z}
+	bspc node -g {marked,locked,sticky,private}
+
+#
+# focus/swap
+#
+
+# focus the node in the given direction
+super + {_,shift + }{h,j,k,l}
+	bspc node -{f,s} {west,south,north,east}
+
+# focus the node for the given path jump
+super + {p,b,comma,period}
+	bspc node -f @{parent,brother,first,second}
+
+# focus the next/previous node in the current desktop
+super + {_,shift + }c
+	bspc node -f {next,prev}.local
+
+# focus the next/previous desktop in the current monitor
+super + bracket{left,right}
+	bspc desktop -f {prev,next}.local
+
+# focus the last node/desktop
+super + {grave,Tab}
+	bspc {node,desktop} -f last
+
+# focus the older or newer node in the focus history
+super + {o,i}
+	bspc wm -h off; \
+	bspc node {older,newer} -f; \
+	bspc wm -h on
+
+# focus or send to the given desktop
+super + {_,shift + }{1-9,0}
+	bspc {desktop -f,node -d} '^{1-9,10}'
+
+#
+# preselect
+#
+
+# preselect the direction
+super + ctrl + {h,j,k,l}
+	bspc node -p {west,south,north,east}
+
+# preselect the ratio
+super + ctrl + {1-9}
+	bspc node -o 0.{1-9}
+
+# cancel the preselection for the focused node
+super + ctrl + space
+	bspc node -p cancel
+
+# cancel the preselection for the focused desktop
+super + ctrl + shift + space
+	bspc query -N -d | xargs -I id -n 1 bspc node id -p cancel
+
+#
+# move/resize
+#
+
+# expand a window by moving one of its side outward
+super + alt + {h,j,k,l}
+	bspc node -z {left -20 0,bottom 0 20,top 0 -20,right 20 0}
+
+# contract a window by moving one of its side inward
+super + alt + shift + {h,j,k,l}
+	bspc node -z {right -20 0,top 0 20,bottom 0 -20,left 20 0}
+
+# move a floating window
+super + {Left,Down,Up,Right}
+	bspc node -v {-20 0,0 20,0 -20,20 0}
+
+#Keyboard Layouts
+super + alt d
+         setxkbmap -layout dvorak
+
+super + alt u
+          setxkbmap -layout us
+
+	#Volume Control
 XF86AudioLowerVolume
 	amixer set Master 5%-
 XF86AudioRaiseVolume
@@ -95,9 +140,3 @@ XF86MonBrightnessDown
 	xbacklight -dec 5
 XF86MonBrightnessUp
 	xbacklight -inc 5
-
-alt + c 
-	/usr/bin/google-chrome
-# make sxhkd reload its configuration files:
-alt + r
-	pkill -USR1 -x sxhkd
